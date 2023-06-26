@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ActivityController!{% endblock %}
+
+{% block body %}
+    <div class="container py-4 mt-3 rounded-3">
+        <h1 class="rounded-3">Ma liste de sorties</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Nom</th>
+{#                <th scope="col">Description</th>#}
+                <th scope="col">Détails</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for activity in activities %}
+                <tr>
+                    <td>{{ activity.name }}</td>
+{#                    <td>#}
+{#                        {{ activity.description|slice(0, 50) }}#}
+{#                        {% if activity.description|length > 50 %}...{% endif %}#}
+{#                    </td>#}
+                    <td><a href="{{ path('activity_details', {'id' : activity.id}) }}" class="btn btn-primary">Détails</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
