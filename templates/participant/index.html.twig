@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Participant index{% endblock %}
+
+{% block body %}
+    <h1>Participant index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Lastname</th>
+                <th>Firstname</th>
+                <th>Phone</th>
+                <th>Mail</th>
+                <th>Admin</th>
+                <th>Active</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for participant in participants %}
+            <tr>
+                <td>{{ participant.id }}</td>
+                <td>{{ participant.lastname }}</td>
+                <td>{{ participant.firstname }}</td>
+                <td>{{ participant.phone }}</td>
+                <td>{{ participant.mail }}</td>
+                <td>{{ participant.admin ? 'Yes' : 'No' }}</td>
+                <td>{{ participant.active ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_participant_show', {'id': participant.id}) }}">show</a>
+                    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_participant_new') }}">Create new</a>
+{% endblock %}

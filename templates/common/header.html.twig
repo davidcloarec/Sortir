@@ -26,8 +26,7 @@
                     <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_main") }}">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-secondary btn-outline-light me-2" href="#">Mon profil</a>
-{#                    <a class="nav-link" href="{{ path("app_profile") }}">Mon profil</a>#}
+                    <a class="btn btn-secondary btn-outline-light me-2" href='{{ path("app_participant_edit",{"id":app.user.participant.id}) }}'>Mon profil</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_logout") }}">Se déconnecter</a>
