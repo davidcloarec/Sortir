@@ -1,7 +1,7 @@
 {% block header %}
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark py-0">
-        <a class="navbar-brand" href="#">
-            <img src="{{ asset("assets/img/sortirlogo.png") }}" width="100" height="100" alt="">
+        <a class="navbar-brand" href="{{ path("activity_list") }}">
+            <img src="{{ asset("assets/img/sortirlogo.png") }}" width="60" height="50" alt="">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,9 +10,10 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"><h3>Sortir</h3></a>
+                    <a class="nav-link" href="{{ path("activity_list") }}"><h3>Sortir</h3></a>
                 </li>
             </ul>
+            {% if app.user %}
             <ul class="navbar-nav ms-auto">
                 {% if is_granted("ROLE_ADMIN") %}
                     <li class="nav-item">
@@ -23,7 +24,7 @@
                     </li>
                 {% endif %}
                 <li class="nav-item">
-                    <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_main") }}">Accueil</a>
+                    <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("activity_list") }}">Accueil</a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-secondary btn-outline-light me-2" href='{{ path("app_participant_edit",{"id":app.user.participant.id}) }}'>Mon profil</a>
@@ -32,6 +33,7 @@
                     <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_logout") }}">Se déconnecter</a>
                 </li>
             </ul>
+            {% endif %}
         </div>
     </nav>
 {% endblock %}

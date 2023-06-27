@@ -3,44 +3,28 @@
 {% block title %}Participant{% endblock %}
 
 {% block body %}
-    <h1>Participant</h1>
+    <div class="row mt-5">
+        <div class="col-md-6 offset-md-5">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ participant.id }}</td>
-            </tr>
-            <tr>
-                <th>Lastname</th>
-                <td>{{ participant.lastname }}</td>
-            </tr>
-            <tr>
-                <th>Firstname</th>
-                <td>{{ participant.firstname }}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{{ participant.phone }}</td>
-            </tr>
-            <tr>
-                <th>Mail</th>
-                <td>{{ participant.mail }}</td>
-            </tr>
-            <tr>
-                <th>Admin</th>
-                <td>{{ participant.admin ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Active</th>
-                <td>{{ participant.active ? 'Yes' : 'No' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Pseudo : {{ participant.user.username | capitalize }}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Prénom : {{ participant.firstname }}</li>
+                        <li class="list-group-item">Nom : {{ participant.lastname }}</li>
+                        <li class="list-group-item">Email : {{ participant.mail }}</li>
+                        <li class="list-group-item">Téléphone : {{ participant.phone }}</li>
+                    </ul>
+                    <div class="card-body">
+                        {#            <a href="#" class="card-link"></a>#}
+                        <p>Campus de rattachement : {{ participant.campus.name }}</p>
+                    </div>
+                </div>
+        </div>
+    </div>
 
-    <a href="{{ path('app_participant_index') }}">back to list</a>
-
-    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a>
-
-    {{ include('participant/_delete_form.html.twig') }}
+{#    <a href="{{ path('app_participant_index') }}">back to list</a>#}
+{#    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a>#}
+{#    {{ include('participant/_delete_form.html.twig') }}#}
 {% endblock %}
