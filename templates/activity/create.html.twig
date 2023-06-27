@@ -3,50 +3,91 @@
 {% block title %}Creer une sortie{% endblock %}
 
 {% block body %}
-
-<h1>Création de sortie</h1>
-    <div>
-        {{ form_start(activityForm) }}
-        <div>
-            {{ form_label(activityForm.name) }}
-            {{ form_widget(activityForm.name) }}
-            {{ form_errors(activityForm.name) }}
-        </div>
-        <div>
-            {{ form_label(activityForm.startingTime) }}
-            {{ form_widget(activityForm.startingTime) }}
-            {{ form_errors(activityForm.startingTime) }}
-        </div>
-        <div>
-            {{ form_label(activityForm.signUpLimit) }}
-            {{ form_widget(activityForm.signUpLimit) }}
-            {{ form_errors(activityForm.signUpLimit) }}
-        </div>
-        <div>
-            {{ form_label(activityForm.maxSignUp) }}
-            {{ form_widget(activityForm.maxSignUp) }}
-            {{ form_errors(activityForm.maxSignUp) }}
-        </div>
-        <div>
-            {{ form_label(activityForm.duration) }}
-            {{ form_widget(activityForm.duration) }}
-            {{ form_errors(activityForm.duration) }}
-        </div>
-        <div>
-            {{ form_label(activityForm.info) }}
-            {{ form_widget(activityForm.info) }}
-            {{ form_errors(activityForm.info) }}
-        </div>
-        <div>
-            {{ form_label(activityForm.venue) }}
-            {{ form_widget(activityForm.venue) }}
-            {{ form_errors(activityForm.venue) }}
-        </div>
-        <div>
-            <button type="submit"> Envoyer</button>
-        </div>
-        {{ form_end(activityForm) }}
+    <div hidden>
+        {% for city in cities %}
+            <p id="{{ city.name }}_postal">{{ city.postalCode }}</p>
+            {% for venue in city.venue %}
+                <p id="{{ city.name }}_{{ venue.id }}_street">{{ venue.street }}</p>
+                <p id="{{ city.name }}_{{ venue.id }}_latitude">{{ venue.latitude }}</p>
+                <p id="{{ city.name }}_{{ venue.id }}_longitude">{{ venue.longitude }}</p>
+            {% endfor %}
+        {% endfor %}
     </div>
 
+<div class="container">
+    <h1 class="text-center mb-4 mt-2">Création de sortie</h1>
+    {{ form_start(activityForm) }}
+    <div class="d-flex col-6 offset-3">
+        <div class="col-6 d-flex justify-content-center flex-wrap">
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-1 card card-header">
+                {{ form_label(activityForm.name) }}
+                {{ form_widget(activityForm.name) }}
+                {{ form_errors(activityForm.name) }}
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-1 card card-header">
+                {{ form_label(activityForm.startingTime) }}
+                {{ form_widget(activityForm.startingTime) }}
+                {{ form_errors(activityForm.startingTime) }}
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-1 card card-header">
+                {{ form_label(activityForm.signUpLimit) }}
+                {{ form_widget(activityForm.signUpLimit) }}
+                {{ form_errors(activityForm.signUpLimit) }}
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-1 card card-header">
+                {{ form_label(activityForm.maxSignUp) }}
+                {{ form_widget(activityForm.maxSignUp) }}
+                {{ form_errors(activityForm.maxSignUp) }}
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-1 card card-header">
+                {{ form_label(activityForm.duration) }}
+                {{ form_widget(activityForm.duration) }}
+                {{ form_errors(activityForm.duration) }}
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-1 card card-header">
+                {{ form_label(activityForm.info) }}
+                {{ form_widget(activityForm.info) }}
+                {{ form_errors(activityForm.info) }}
+            </div>
+        </div>
+        <div class="col-6 d-flex justify-content-center flex-wrap">
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-3 card card-header">
+                {{ form_label(activityForm.campus) }}
+                {{ form_widget(activityForm.campus) }}
+                {{ form_errors(activityForm.campus) }}
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-3 card card-header">
+                <label for="city">Ville : </label>
+                <select name="city" id="city">
+                    {% for key, city in cities %}
+                    <option value="{{ city.name }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-3 card card-header">
+                {{ form_label(activityForm.venue) }}
+                {{ form_widget(activityForm.venue) }}
+                {{ form_errors(activityForm.venue) }}
+            </div>
+            <div class="d-flex justify-content-center flex-wrap col-10 mb-3 card card-header">
+                <p>Rue : <b id="street">{{ cities[0].venue[0].street }}</b></p>
+                <p>Code postal : <b id="postal">{{ cities[0].postalCode }}</b></p>
+                <p>Latitude : <b id="latitude">{{ cities[0].venue[0].latitude }}</b></p>
+                <p>Longitude : <b id="longitude">{{ cities[0].venue[0].longitude }}</b></p>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-flex col-4 offset-4 justify-content-around mt-3">
+        <button class="btn btn-warning" type="submit" name="button" value="save">Enregistrer</button>
+        <button class="btn btn-success" type="submit" name="button" value="publish">Publier la sortie</button>
+        <a class="btn btn-danger" href="{{ path('activity_list') }}">Annuler</a>
+    </div>
+    {{ form_end(activityForm) }}
+
+</div>
+<script type="text/javascript" src="{{ asset('assets/js/create.js') }}"></script>
 
 {% endblock %}
+
+

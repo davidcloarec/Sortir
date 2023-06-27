@@ -8,6 +8,7 @@ use App\Entity\State;
 use App\Form\ActivityType;
 use App\Repository\ActivityRepository;
 use App\Repository\CampusRepository;
+use App\Repository\CityRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\StateRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function PHPUnit\Framework\equalTo;
 
 #[Route('/activity', name:'activity_')]
 class ActivityController extends AbstractController
@@ -23,31 +25,34 @@ class ActivityController extends AbstractController
     public function create(
         EntityManagerInterface $entityManager,
         StateRepository $stateRepository,
-        ParticipantRepository $participantRepository,
-        CampusRepository $campusRepository,
+        CityRepository $cityRepository,
         Request $request): Response
     {
         $activity = new Activity();
-        $activityForm = $this->createForm(ActivityType::class, $activity);
+        $cities = $cityRepository->findAll();
 
+        //recuperation des infos en session
+        $user = $this->getUser();
+        $organizer = $user->getParticipant();
+        $activity->setOrganizer($organizer);
+
+        $activityForm = $this->createForm(ActivityType::class, $activity);
         $activityForm->handleRequest($request);
 
         if($activityForm->isSubmitted() && $activityForm->isValid()){
-
-            $state = $stateRepository->find(1);
-            $organizer = $participantRepository->find(1);
-            $campus = $campusRepository->find(1);
-
+            $button = $request->get("button");
+            if($button == "save") $state = $stateRepository->findOneByLibelle("créée");
+            else $state = $stateRepository->findOneByLibelle("ouverte");
             $activity->setState($state);
-            $activity->setOrganizer($organizer);
-            $activity->setCampus($campus);
 
             $entityManager->persist($activity);
             $entityManager->flush();
+            return $this->redirectToRoute('activity_list');
         }
 
         return $this->render('activity/create.html.twig', [
-            'activityForm' => $activityForm->createView()
+            'activityForm' => $activityForm->createView(),
+            'cities'=> $cities
         ]);
     }
 

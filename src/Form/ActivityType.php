@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Activity;
+use App\Entity\Campus;
 use App\Entity\Venue;
 use phpDocumentor\Reflection\DocBlock\Tags\Formatter;
 use phpDocumentor\Reflection\Types\Collection;
@@ -42,10 +43,15 @@ class ActivityType extends AbstractType
             ->add('info', TextareaType::class, [
                 'label' => 'Descriptions et infos : '
             ])
+            ->add('campus', EntityType::class,[
+                'class'=> Campus::class,
+                'label'=>'Campus : ',
+                'choice_label'=>'name'
+            ])
             ->add('venue', EntityType::class, [
                 'class'=> Venue::class,
-                'label'=> 'Lieu',
-                'choice_label'=> 'name'
+                'label'=> 'Lieu :',
+                'choice_label'=> 'name',
             ])
         ;
     }
