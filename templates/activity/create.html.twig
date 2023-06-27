@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Creer une sortie{% endblock %}
+
+{% block body %}
+
+<h1>Création de sortie</h1>
+    <div>
+        {{ form_start(activityForm) }}
+        <div>
+            {{ form_label(activityForm.name) }}
+            {{ form_widget(activityForm.name) }}
+            {{ form_errors(activityForm.name) }}
+        </div>
+        <div>
+            {{ form_label(activityForm.startingTime) }}
+            {{ form_widget(activityForm.startingTime) }}
+            {{ form_errors(activityForm.startingTime) }}
+        </div>
+        <div>
+            {{ form_label(activityForm.signUpLimit) }}
+            {{ form_widget(activityForm.signUpLimit) }}
+            {{ form_errors(activityForm.signUpLimit) }}
+        </div>
+        <div>
+            {{ form_label(activityForm.maxSignUp) }}
+            {{ form_widget(activityForm.maxSignUp) }}
+            {{ form_errors(activityForm.maxSignUp) }}
+        </div>
+        <div>
+            {{ form_label(activityForm.duration) }}
+            {{ form_widget(activityForm.duration) }}
+            {{ form_errors(activityForm.duration) }}
+        </div>
+        <div>
+            {{ form_label(activityForm.info) }}
+            {{ form_widget(activityForm.info) }}
+            {{ form_errors(activityForm.info) }}
+        </div>
+        <div>
+            {{ form_label(activityForm.venue) }}
+            {{ form_widget(activityForm.venue) }}
+            {{ form_errors(activityForm.venue) }}
+        </div>
+        <div>
+            <button type="submit"> Envoyer</button>
+        </div>
+        {{ form_end(activityForm) }}
+    </div>
+
+
+{% endblock %}

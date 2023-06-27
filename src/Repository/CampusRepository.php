@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Campus[]    findAll()
  * @method Campus[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SiteRepository extends ServiceEntityRepository
+class CampusRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
