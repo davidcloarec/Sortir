@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\SiteRepository;
+use App\Repository\CampusRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: SiteRepository::class)]
+#[ORM\Entity(repositoryClass: CampusRepository::class)]
 class Campus
 {
     #[ORM\Id]
