@@ -48,6 +48,9 @@ class Participant
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\OneToOne(mappedBy: 'participant', cascade: ['persist', 'remove'])]
+    private ?Image $image = null;
+
     public function __construct()
     {
         $this->activities = new ArrayCollection();
@@ -208,4 +211,27 @@ class Participant
 
         return $this;
     }
+
+    public function getImage(): ?Image
+    {
+        return $this->image;
+    }
+
+    public function setImage(?Image $image): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($image === null && $this->image !== null) {
+            $this->image->setParticipant(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($image !== null && $image->getParticipant() !== $this) {
+            $image->setParticipant($this);
+        }
+
+        $this->image = $image;
+
+        return $this;
+    }
+
 }
