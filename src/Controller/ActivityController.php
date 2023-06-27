@@ -91,9 +91,4 @@ class ActivityController extends AbstractController
             'participant' => $participant
         ]);
     }
-
-
-
-
-
 }
