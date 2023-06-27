@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ActivityController for details!{% endblock %}
+
+{% block body %}
+    <h2 class="text-center">Afficher une sortie</h2>
+    <div class="container">
+        {% if activity %}
+   <div class="">
+       <div class="col-sm-6">
+           <p>Nom de la sortie : {{ activity.name }}</p>
+           <p>Date et heure de sortie : {{ activity.startingTime|date }}</p>
+           <p>Date limite d'inscription : {{ activity.signUpLimit|date }}</p>
+           <p>Nombre de place : {{ activity.maxSignUp }}</p>
+           <p>Durée : {{ activity.duration }} minutes</p>
+           <p>Description et informations : {{ activity.info }}</p>
+       </div>
+       <div class="col-sm-6">
+           <p>Lieu : {{ activity.venue.name }}</p>
+           <p>Rue : {{ activity.venue.street }}</p>
+           <p>Ville : {{ activity.venue.city.name }}</p>
+           <p>Code postal : {{ activity.venue.city.postalCode }}</p>
+           <br>
+           <p>Latitude : {{ activity.venue.latitude }}</p>
+           <p>Longitude : {{ activity.venue.longitude }}</p>
+       </div>
+
+   </div>
+        {% else %}
+            <p>Il n'y a pas de sorties correspondant à cet id en base de données.</p>
+        {% endif %}
+    </div>
+    <div>
+
+        <div class="container py-4 mt-3 rounded-3">
+            <h4 class="rounded-3">Liste des paticipants inscrits : </h4>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Pseudo</th>
+                    <th scope="col">Nom</th>
+                </tr>
+                </thead>
+                <tbody>
+{#                {% for user in users %}#}
+                    <tr>
+{#                        <td>{{ user.username }}</td>#}
+                        <td>mon pseudo</td>
+                        <td>{{ participant.lastname }}</td>
+                    </tr>
+{#                {% endfor %}#}
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+{% endblock %}
