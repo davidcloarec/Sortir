@@ -3,23 +3,97 @@
 {% block title %}Edit Participant{% endblock %}
 
 {% block body %}
-    <h1>Mon profil</h1>
-    {{ form_start(form) }}
-    <div>
+    <div class="text-center">
+        <h1>Mon profil</h1>
+        {% if participant.image %}
+        <img src="{{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}" alt="profile picture">
+        {% endif %}
+    </div>
+    <div class="col offset-md-4">
+        {{ form_start(form) }}
         {#            Partie User #}
-        {{ form_row(form.username) }}
+
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username, {'attr':{'class': 'form-control'} }) }}
+                {{ form_errors(form.username) }}
+            </div>
+        </div>
         {#            Partie Participant #}
-        {{ form_row(form.firstname) }}
-        {{ form_row(form.lastname) }}
-        {{ form_row(form.mail) }}
-        {{ form_row(form.campus) }}
-        {{ form_row(form.phone) }}
-        {{ form_row(form.admin) }}
-        {{ form_row(form.active) }}
-        <button class="btn btn-info" type="submit">Update</button>
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                {{ form_label(form.firstname) }}
+                {{ form_widget(form.firstname, {'attr':{'class': 'form-control'} }) }}
+                {{ form_errors(form.firstname) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                {{ form_label(form.lastname) }}
+                {{ form_widget(form.lastname, {'attr':{'class': 'form-control'} }) }}
+                {{ form_errors(form.lastname) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                {{ form_label(form.mail) }}
+                {{ form_widget(form.mail, {'attr':{'class': 'form-control'} }) }}
+                {{ form_errors(form.mail) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                {{ form_label(form.campus) }}
+                {{ form_widget(form.campus, {'attr':{'class': 'form-control'} }) }}
+                {{ form_errors(form.campus) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                {{ form_label(form.phone) }}
+                {{ form_widget(form.phone, {'attr':{'class': 'form-control'} }) }}
+                {{ form_errors(form.phone) }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                <div class="d-flex justify-content-around p-2">
+                    {{ form_label(form.admin) }}
+                    {{ form_widget(form.admin) }}
+                    {{ form_errors(form.admin) }}
+
+                    {{ form_label(form.active) }}
+                    {{ form_widget(form.active) }}
+                    {{ form_errors(form.active) }}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 p-2">
+                {{ form_label(form.image) }}
+                {{ form_widget(form.image, {'attr':{'class': 'form-control'} }) }}
+                {{ form_errors(form.image) }}
+            </div>
+        </div>
+        {#    {{ form_row(form.lastname) }} #}
+        {#    {{ form_row(form.mail) }} #}
+        {#    {{ form_row(form.campus) }} #}
+        {#    {{ form_row(form.phone) }} #}
+        {#    {{ form_row(form.admin) }} #}
+        {#    {{ form_row(form.active) }} #}
+        {#    {{ form_row(form.image) }} #}
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <div class="d-flex justify-content-around p-2">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    <a class="btn btn-danger" href="{{ path('activity_list') }}">Annuler</a>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
     </div>
 
-    {{ form_end(form) }}
     {#    <div class="alert alert-warning"> #}
     {#        {{ form_errors(form) }} #}
     {#    </div> #}
