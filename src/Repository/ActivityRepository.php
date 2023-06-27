@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\classe\Search;
 use App\Entity\Activity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -37,6 +38,22 @@ class ActivityRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findWithSearch(Search $search)
+    {
+        $query = $this
+            ->createQueryBuilder('a');
+
+
+        if (!empty($search->string)) {
+            $query = $query
+                ->andWhere('a.name LIKE :string')
+                ->setParameter('string', "%{$search->string}%");
+        }
+
+        return $query->getQuery()->getResult();
+
     }
 
 //    /**
