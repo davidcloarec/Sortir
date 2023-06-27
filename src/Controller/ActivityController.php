@@ -10,6 +10,7 @@ use App\Repository\ActivityRepository;
 use App\Repository\CampusRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\StateRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,15 +81,18 @@ class ActivityController extends AbstractController
     )]
     public function details($id,
                             ActivityRepository $activityRepository,
-                            ParticipantRepository $participantRepository
+                            ParticipantRepository $participantRepository,
+                            UserRepository $userRepository
     ): Response
     {
         $activity = $activityRepository->find($id);
         $participant = $participantRepository->find($id);
+        $user = $userRepository->find($id);
 
         return $this->render('activity/details.html.twig', [
             "activity" => $activity,
-            'participant' => $participant
+            'participant' => $participant,
+            'user' => $user
         ]);
     }
 }
