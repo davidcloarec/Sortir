@@ -32,6 +32,8 @@ class RegistrationController extends AbstractController
 
             $participant = new Participant();
             $participant->setUser($user);
+            $participant->setLastname("");
+            $participant->setFirstname("");
             $participant->setMail($user->getEmail());
             $participant->setAdmin(0);
             $participant->setActive(1);

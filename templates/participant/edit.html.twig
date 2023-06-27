@@ -3,11 +3,28 @@
 {% block title %}Edit Participant{% endblock %}
 
 {% block body %}
-    <h1>Edit Participant</h1>
+    <h1>Mon profil</h1>
+    {{ form_start(form) }}
+    <div>
+        {#            Partie User #}
+        {{ form_row(form.username) }}
+        {#            Partie Participant #}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.mail) }}
+        {{ form_row(form.campus) }}
+        {{ form_row(form.phone) }}
+        {{ form_row(form.admin) }}
+        {{ form_row(form.active) }}
+        <button class="btn btn-info" type="submit">Update</button>
+    </div>
 
-    {{ include('participant/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ form_end(form) }}
+    {#    <div class="alert alert-warning"> #}
+    {#        {{ form_errors(form) }} #}
+    {#    </div> #}
 
-    <a href="{{ path('app_participant_index') }}">back to list</a>
-
-    {{ include('participant/_delete_form.html.twig') }}
+    {#    {{ include('participant/_form.html.twig', {'button_label': 'Update'}) }} #}
+    {#    <a class="btn btn-outline-dark" href="{{ path('app_participant_index') }}">Retour</a> #}
+    {#    {{ include('participant/_delete_form.html.twig') }} #}
 {% endblock %}

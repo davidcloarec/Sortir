@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use App\Entity\Participant;
-use App\Entity\User;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +14,12 @@ class ParticipantType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $participant = $builder->getData();
+        $username = '';
+
+        if ($participant->getUser()) {
+            $username = $participant->getUser()->getUsername();
+        }
         $builder
             ->add('lastname')
             ->add('firstname')
@@ -21,19 +27,17 @@ class ParticipantType extends AbstractType
             ->add('mail')
             ->add('admin')
             ->add('active')
-            ->add('campus',EntityType::class,[
-                'class'=>Campus::class,
+            ->add('campus', EntityType::class, [
+                'class' => Campus::class,
                 'choice_label' => 'name',
                 'multiple' => false,
                 'expanded' => false,
             ])
-            ->add('user',EntityType::class,[
-                'class'=>User::class,
-                'choice_label' => 'username',
-                'multiple' => false,
-                'expanded' => false,
-            ])
-        ;
+            ->add('username', TextType::class, [
+                'mapped' => false, // Exclude from entity mapping
+                'data' => $username,
+                'label' => 'Username',
+            ]);;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
