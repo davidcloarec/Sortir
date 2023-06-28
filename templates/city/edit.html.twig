@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="text-center">Editer un campus : {{ city.name }}</div>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 offset-md-5 mt-4">
+
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_errors(form.name) }}
+
+
+            {{ form_label(form.postalCode) }}
+            {{ form_widget(form.postalCode, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_errors(form.postalCode) }}
+        </div>
+    </div>
+    <div class="col-md-4 offset-md-5 mt-3">
+        <div class="d-flex justify-content-between col-6">
+            <button class="btn btn-success">Enregistrer</button>
+            <a class="btn btn-danger" href="{{ path("app_city_index") }}">Annuler</a>
+        </div>
+    </div>
+
+
+
+
+    {{ form_end(form) }}
+
+{% endblock %}

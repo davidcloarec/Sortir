@@ -9,13 +9,21 @@
     <div class="row">
 
 
-    {% if participant.image %}
+
         <div class="col-md-5 text-center">
-            <img src="{{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}" alt="profile picture"
-                 border="2px solid black"
-                 width="250" height="250">
+            <img
+                    id="profile-picture"
+                    src="
+                    {% if participant.image %}
+                        {{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}
+                    {% endif %}
+                    "
+                    alt=""
+                    border="2px solid black"
+                    width="250" height="250"
+            >
         </div>
-    {% endif %}
+
     <div class="col-md-5">
         {{ form_start(form) }}
         {#            Partie User #}
@@ -108,4 +116,5 @@
     {#    {{ include('participant/_form.html.twig', {'button_label': 'Update'}) }} #}
     {#    <a class="btn btn-outline-dark" href="{{ path('app_participant_index') }}">Retour</a> #}
     {#    {{ include('participant/_delete_form.html.twig') }} #}
+    <script type="text/javascript" src="{{ asset("assets/js/imageupload.js") }}"></script>
 {% endblock %}

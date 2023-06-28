@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="row ms-3 mt-3">
+        <h4>Filtrer les villes</h4>
+        <form action="">
+            <label for="search">Le nom contient : </label>
+            <input class="form-control-sm" type="search" name="search" id="search">
+{#            <button class="btn btn-sm btn-info">Rechercher</button>#}
+        </form>
+    </div>
+    <div class="row p-5">
+        <div class="col-md-3">
+        <table class="table table-striped">
+            <tr>
+                <th scope="col">Ville</th>
+                <th scope="col">Code postal</th>
+                <th scope="col">Actions</th>
+            </tr>
+
+            {% for city in cities %}
+                <tr id="{{ city.name|lower }}">
+                    <td id="city">{{ city.name }}</td>
+                    <td id="city">{{ city.postalCode }}</td>
+                    <td>
+                        <a href="{{ path("app_city_edit",{"id":city.id}) }}">Modifier</a>
+                        -
+                        <a href="">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+            <div class="text-start">
+                <a class="btn btn-warning" href="{{ path("app_city_new") }}">Ajouter</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{ asset("assets/js/city.js") }}"></script>
+{% endblock %}

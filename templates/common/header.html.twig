@@ -17,7 +17,7 @@
             <ul class="navbar-nav ms-auto">
                 {% if is_granted("ROLE_ADMIN") %}
                     <li class="nav-item">
-                        <a class="btn btn-secondary btn-outline-light me-2" href="#">Villes</a>
+                        <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_city_index") }}">Villes</a>
                     </li>
                     <li class="nav-item">
                         <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_campus_index") }}">Les Campus</a>
