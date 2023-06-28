@@ -43,7 +43,7 @@
 
             <div class="col-md-4">
                 <div>
-                    <input type="checkbox" id="isOrganized" name="isOrganized" checked>
+                    <input type="checkbox" id="isOrganized" name="isOrganized">
                     <label for="isOrganized">Sorties dont je suis l'organisateur/trice</label>
                 </div>
                 <div>
@@ -59,9 +59,9 @@
                     <label for="past">Sorties passées</label>
                 </div>
             </div>
-            <div class="col-md-4">
-                <button type="submit">Rechercher</button>
-            </div>
+{#            <div class="col-md-4">#}
+{#                <button type="submit">Rechercher</button>#}
+{#            </div>#}
         </div>
         <br>
     </div>
@@ -98,7 +98,7 @@
                                 {% endif %}
                             {% endfor %}
                         </td>
-                        <td name="organizer">{{ activity.organizer.lastname }}</td>
+                        <td><a href="{{ path('app_participant_show',{ "id":activity.organizer.id} ) }}"  name="organizer">{{ activity.organizer.lastname }}</a></td>
                         <td><a href="{{ path('activity_details', {'id' : activity.id}) }}">afficher</a></td>
                     </tr>
                 {% endfor %}
@@ -107,7 +107,7 @@
 
             <br>
             <div>
-                <button href="#">Créer une sortie</button>
+                <a href="{{ path('activity_create') }}" class="btn btn-warning">Créer une sortie</a>
             </div>
         </div>
     </div>
