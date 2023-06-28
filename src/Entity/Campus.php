@@ -28,6 +28,11 @@ class Campus
         $this->participants = new ArrayCollection();
         $this->activity = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
 
     public function getId(): ?int
     {
