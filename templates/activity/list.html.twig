@@ -24,8 +24,8 @@
             </div>
             <div class="col-md-4">
                 <div>
-                    <input type="checkbox" id="isOrginazed" name="isOrginazed" checked>
-                    <label for="isOrginazed">Sorties dont je suis l'organisateur/trice</label>
+                    <input type="checkbox" id="isOrganized" name="isOrganized" checked>
+                    <label for="isOrganized">Sorties dont je suis l'organisateur/trice</label>
                 </div>
                 <div>
                     <input type="checkbox" id="isRegistred" name="isRegistred">
@@ -71,15 +71,15 @@
                         <td>{{ activity.startingTime|date }}</td>
                         <td>{{ activity.signUpLimit|date }}</td>
                         <td>{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
-                        <td>{{ activity.state.libelle }}</td>
-                        <td>
+                        <td name="state">{{ activity.state.libelle }}</td>
+                        <td name="register">
                             {% for participant in activity.participants %}
                                 {% if participant.id == app.user.participant.id %}
                                 x
                                 {% endif %}
                             {% endfor %}
                         </td>
-                        <td>{{ activity.organizer.lastname }}</td>
+                        <td name="organizer">{{ activity.organizer.lastname }}</td>
                         <td><a href="{{ path('activity_details', {'id' : activity.id}) }}">afficher</a></td>
                     </tr>
                 {% endfor %}
@@ -92,4 +92,6 @@
             </div>
         </div>
     </div>
+    <div hidden id="username">{{ app.user.participant.lastname }}</div>
+    <script type="text/javascript" src="{{ asset('assets/js/list.js') }}"></script>
 {% endblock %}

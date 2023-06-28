@@ -7,13 +7,14 @@
         <h1>{{ participant.user.username }}</h1>
     </div>
     <div class="row mt-5">
-        {% if participant.image %}
-            <div class="col-md-6 text-center">
-                <img src="{{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}" alt="profile picture"
+        <div class="col-md-6 text-center">
+            {% if participant.image %}
+                <img src="{{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}" alt=""
                      border="2px solid black"
                      width="250" height="250">
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
+
         <div class="col-md-6">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
