@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\Participant;
 use App\Form\ParticipantType;
+use App\Repository\ImageRepository;
 use App\Repository\ParticipantRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Vich\UploaderBundle\Handler\UploadHandler;
 
 #[Route('/participant')]
 class ParticipantController extends AbstractController
@@ -58,15 +59,20 @@ class ParticipantController extends AbstractController
 
 //    #[isGranted("ROLE_ADMIN")]
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository, UserRepository $userRepository,SluggerInterface $slugger): Response
+    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository, UserRepository $userRepository,SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form->get('image')->getData();
-
             $image = new Image();
             if ($imageFile) {
+
+                $previousImage = $participant->getImage();
+                if (isset($previousImage)) {
+                    $entityManager->remove($previousImage);
+                    $entityManager->flush();
+                }
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // On viens nettoyer le nom du fichier pour éviter tout problème dans l'URL
                 $safeFilename = $slugger->slug($originalFilename);
@@ -79,7 +85,6 @@ class ParticipantController extends AbstractController
                 } catch (FileException $e) {
                     // ... On gère l'exception
                 }
-
                 // On enregistre le nom du fichier plutôt que le fichier lui même
                 $image->setImageFile($newFilename);
             }
