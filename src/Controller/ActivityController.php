@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\classe\Search;
 use App\Entity\Activity;
+use App\Entity\Campus;
 use App\Entity\Participant;
 use App\Entity\State;
 use App\Form\ActivityType;
@@ -72,24 +73,28 @@ class ActivityController extends AbstractController
         $search = new Search();
         $form = $this->createForm(SearchType::class, $search);
 
+
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-            $activities = $entityManager->getRepository(Activity::class)->findWithSearch($search);
-//            $activities = $activityRepository->findWithSearch($search);
+//            dd($search);
+            $campus = $form->get("campus")->getData();
+            $search->campus=$campus;
+
+            $activities = $activityRepository->findWithSearch($search);
         } else {
-            $activities = $entityManager->getRepository(Activity::class)->findAll();
-//            $activities = $activityRepository->findAll();
+            $activities = $activityRepository->findAll();
+
         }
+
         /******SearchFilterEnd******/
 
-//        $activities = $activityRepository->findAll(); // a decommenter si searchfiltr viré
         $participants = $participantRepository->findAll();
         $activitiesCount = $activityRepository->count([]);
-//        $campus = $campusRepository->findAll();
+
 
         return $this->render('activity/list.html.twig', [
-//            'campus' => $campus,
+
             'activities' => $activities,
             'participants' => $participants,
             'activitiesCount' => $activitiesCount,

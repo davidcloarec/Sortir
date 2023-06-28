@@ -55,6 +55,10 @@ class Activity
     {
         $this->participants = new ArrayCollection();
     }
+    public function __toString(): string
+    {
+        return $this->campus; // Replace "name" with the property that represents the string representation of the activity.
+    }
 
     public function getId(): ?int
     {

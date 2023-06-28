@@ -16,16 +16,35 @@
             <br>
         </div>
 
+
         <div class="row">
-            <div class="col-md-4">
-                <p>Site : </p>
-                <p>Le nom de la sortie contient : {{ form(form) }}</p>
-                <p>entre ...</p>
-            </div>
+
+                <div class="col-md-4">
+                    {{ form_start(form) }}
+                    <div>
+                        {{ form_label(form.campus) }}
+                        {{ form_widget(form.campus) }}
+                        {{ form_errors(form.campus) }}
+                    </div>
+                    <div>
+                        {{ form_label(form.string) }}
+                        {{ form_widget(form.string) }}
+                        {{ form_errors(form.string) }}
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+
+{#            <div>#}
+{#                {% for activity in activities %}#}
+{#                    <td>{{ activity.campus.name }}</td>#}
+{#                {% endfor %}#}
+{#            </div>#}
+
             <div class="col-md-4">
                 <div>
-                    <input type="checkbox" id="isOrginazed" name="isOrginazed" checked>
-                    <label for="isOrginazed">Sorties dont je suis l'organisateur/trice</label>
+                    <input type="checkbox" id="isOrganized" name="isOrganized" checked>
+                    <label for="isOrganized">Sorties dont je suis l'organisateur/trice</label>
                 </div>
                 <div>
                     <input type="checkbox" id="isRegistred" name="isRegistred">

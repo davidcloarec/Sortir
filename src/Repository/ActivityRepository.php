@@ -43,13 +43,22 @@ class ActivityRepository extends ServiceEntityRepository
     public function findWithSearch(Search $search)
     {
         $query = $this
-            ->createQueryBuilder('a');
+            ->createQueryBuilder('a')
+            ->select('a', 'c')
+            ->join('a.campus', 'c');
 
+
+        if(!empty($search->campus)) {
+            $query = $query
+                ->andWhere('c.id IN (:campus)')
+                ->setParameter('campus', $search->campus);
+        }
 
         if (!empty($search->string)) {
             $query = $query
                 ->andWhere('a.name LIKE :string')
                 ->setParameter('string', "%{$search->string}%");
+
         }
 
         return $query->getQuery()->getResult();
