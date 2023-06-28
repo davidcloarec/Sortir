@@ -16,6 +16,8 @@ use App\Repository\StateRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,6 +52,7 @@ class ActivityController extends AbstractController
 
             $entityManager->persist($activity);
             $entityManager->flush();
+            $this->addFlash("success", "Sortie créée");
             return $this->redirectToRoute('activity_list');
         }
 
@@ -122,5 +125,79 @@ class ActivityController extends AbstractController
             'participant' => $participant,
             'user' => $user
         ]);
+    }
+
+    #[Route('/{id}/update', name: 'update', requirements: ["id" => "\d+"])]
+    public function update($id,
+        EntityManagerInterface $entityManager,
+        ActivityRepository $activityRepository,
+        StateRepository $stateRepository,
+        CityRepository $cityRepository,
+        Request $request): Response
+    {
+        $activity = $activityRepository->find($id);
+        $cities = $cityRepository->findAll();
+
+        //verif droits
+        if($activity->getState()->getLibelle() != "créée"){
+            return $this->redirectToRoute('activity_list');
+        }
+
+        $activityForm = $this->createForm(ActivityType::class, $activity);
+        $activityForm->handleRequest($request);
+
+        if($activityForm->isSubmitted() && $activityForm->isValid()){
+            $button = $request->get("button");
+            if($button == "delete"){
+                $entityManager->remove($activity);
+                $this->addFlash("success", "Sortie supprimée");
+            }
+            else {
+                if($button == "save") $state = $stateRepository->findOneByLibelle("créée");
+                else $state = $stateRepository->findOneByLibelle("ouverte");
+                $activity->setState($state);
+                $entityManager->persist($activity);
+                $this->addFlash("success", "Sortie modifiée");
+            }
+            $entityManager->flush();
+            return $this->redirectToRoute('activity_list');
+        }
+
+        return $this->render('activity/update.html.twig', [
+            'activityForm' => $activityForm->createView(),
+            'activity'=>$activity,
+            'cities'=> $cities
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: 'delete', requirements: ["id" => "\d+"])]
+    public function delete(
+        $id,
+        EntityManagerInterface $entityManager,
+        ActivityRepository $activityRepository,
+        StateRepository $stateRepository,
+        Request $request): Response
+    {
+        $activity = $activityRepository->find($id);
+
+        //verif droits
+        if($activity->getState()->getLibelle() != "ouverte"){
+            return $this->redirectToRoute('activity_list');
+        }
+
+        if($request->get('cancelMotive') != null){
+            $state = $stateRepository->findOneByLibelle("annulée");
+            $activity->setCancelMotive($request->get('cancelMotive'));
+            $activity->setState($state);
+            $entityManager->persist($activity);
+            $entityManager->flush();
+            $this->addFlash("success", "Sortie annulée");
+            return $this->redirectToRoute('activity_list');
+        }
+
+        return $this->render('activity/delete.html.twig', [
+            'activity'=> $activity
+        ]);
+
     }
 }

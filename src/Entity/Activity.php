@@ -51,6 +51,9 @@ class Activity
     #[ORM\JoinColumn(nullable: false)]
     private ?State $state = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cancelMotive = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -204,6 +207,18 @@ class Activity
     public function setState(?State $state): static
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getCancelMotive(): ?string
+    {
+        return $this->cancelMotive;
+    }
+
+    public function setCancelMotive(?string $cancelMotive): static
+    {
+        $this->cancelMotive = $cancelMotive;
 
         return $this;
     }

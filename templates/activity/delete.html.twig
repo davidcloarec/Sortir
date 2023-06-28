@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annuler une sortie{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1 class="text-center mb-5 mt-2">Annuler une sortie</h1>
+    <form action="" method="post">
+        <div class="d-flex col-4 offset-4 justify-content-center flex-wrap card card-group bg-info-subtle p-2 table-bordered">
+            <table class="col-10 table table-hover table-primary table-striped table-group-divider border-2 border-info">
+                <tr>
+                    <td>Nom de l'activité :</td>
+                    <td>{{ activity.name }}</td>
+                </tr>
+                <tr>
+                    <td>Date de la sortie :</td>
+                    <td>{{ activity.startingTime|date }}</td>
+                </tr>
+                <tr>
+                    <td>Campus organisateur :</td>
+                    <td>{{ activity.campus.name }}</td>
+                </tr>
+                <tr>
+                    <td>Lieu :</td>
+                    <td>{{ activity.venue.name }}</td>
+                </tr>
+                <tr>
+                    <td class="" rowspan="2">Adresse&nbsp:</td>
+                    <td>{{ activity.venue.street }}.<br>
+                        {{ activity.venue.city.postalCode }}, {{ activity.venue.city.name }}</td>
+                </tr>
+            </table>
+            <div class="d-flex justify-content-center flex-wrap col-10">
+                <textarea name="cancelMotive" id="cancelMotive" cols="30" rows="5"></textarea>
+            </div>
+            <div class="d-flex justify-content-between col-6 p-2">
+                <button class="btn btn-success" type="submit">Enregistrer</button>
+                <a class="btn btn-danger" href="{{ path('activity_list') }}">Annuler</a>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}
+
+
