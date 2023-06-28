@@ -22,7 +22,7 @@
             {% for city in cities %}
                 <tr id="{{ city.name|lower }}">
                     <td id="city">{{ city.name }}</td>
-                    <td id="city">{{ city.postalCode }}</td>
+                    <td id="postalcode">{{ city.postalCode }}</td>
                     <td>
                         <a href="{{ path("app_city_edit",{"id":city.id}) }}">Modifier</a>
                         -
