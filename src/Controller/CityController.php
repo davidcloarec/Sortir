@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/city', name:'app_city_')]
 class CityController extends AbstractController
 {
-    #[Route('/', name: 'app_city_index')]
+    #[Route('/', name: 'index')]
     public function index(CityRepository $cityRepository): Response
     {
         $cities = $cityRepository->findAll();
@@ -23,8 +24,8 @@ class CityController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_city_edit')]
-    public function editCampus(CityRepository $cityRepository,EntityManagerInterface $entityManager,$id,Request $request): Response
+    #[Route('/{id}/edit', name: 'edit')]
+    public function editCity(CityRepository $cityRepository,EntityManagerInterface $entityManager,$id,Request $request): Response
     {
         $city = $cityRepository->find($id);
         $form = $this->createForm(CityType::class,$city);
@@ -41,8 +42,8 @@ class CityController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_city_new')]
-    public function newCampus(EntityManagerInterface $entityManager,Request $request): Response
+    #[Route('/new', name: 'new')]
+    public function newCity(EntityManagerInterface $entityManager,Request $request): Response
     {
         $campus = new City();
         $form = $this->createForm(CityType::class,$campus);
