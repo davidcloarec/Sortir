@@ -18,15 +18,15 @@ class Search
      */
     public $string = '';
 
-//    /**
-//     *  @var Date
-//     */
-//    public $startDate = Date::class;
-//
-//    /**
-//     *  @var Date
-//     */
-//    public $endDate = Date::class;
+    /**
+     *  @var Date
+     */
+    public $startDate = Date::class;
+
+    /**
+     *  @var Date
+     */
+    public $endDate = Date::class;
 
 
 
