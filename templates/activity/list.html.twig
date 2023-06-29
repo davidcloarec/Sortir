@@ -109,8 +109,8 @@
                     %}
                     <tr>
                         <td>{{ activity.name }}</td>
-                        <td>{{ activity.startingTime|date }}</td>
-                        <td>{{ activity.signUpLimit|date }}</td>
+                        <td>{{ activity.startingTime|date('d/m/Y H:i') }}</td>
+                        <td>{{ activity.signUpLimit|date('d/m/Y') }}</td>
                         <td>{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
                         <td name="state">{{ activity.state.libelle }}</td>
                         <td name="register">
