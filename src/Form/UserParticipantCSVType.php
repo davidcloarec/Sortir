@@ -13,7 +13,7 @@ class UserParticipantCSVType extends AbstractType
     {
         $builder
             ->add('submitFile', FileType::class,[
-                'label'=>'Fichier CSV à convertir'
+                'label'=>false
             ])
         ;
     }

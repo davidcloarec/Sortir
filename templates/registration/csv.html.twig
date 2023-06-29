@@ -4,12 +4,20 @@
 
 {% block body %}
     <h1>Ajouter des utilisateurs par CSV</h1>
+    <div class="d-inline-flex m-3">
+        {{ form_errors(registrationForm) }}
 
-    {{ form_errors(registrationForm) }}
+        {{ form_start(registrationForm) }}
+{#        {{ form_row(registrationForm.submitFile) }}#}
+        {{ form_label(registrationForm, 'Fichier CSV à convertir',{'attr': {'class': 'form-label'}}) }}
+        {{ form_widget(registrationForm, {'attr': {'class': 'form-control-sm'}}) }}
+        {#  Preview des utilisateurs insérés avec JS ?  #}
+        <button type="submit" class="btn btn-success m-3">Insérer des utilisateurs</button>
+        {{ form_end(registrationForm) }}
+        <div id="output">
+            {#      Div prévue pour la prévisualisation des données      #}
+        </div>
+    </div>
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.submitFile) }}
-    {#  Preview des utilisateurs insérés avec JS ?  #}
-    <button type="submit" class="btn btn-success">Insérer des utilisateurs</button>
-    {{ form_end(registrationForm) }}
+    <script type="text/javascript" src="{{ asset("assets/js/csv.js") }}"></script>
 {% endblock %}
