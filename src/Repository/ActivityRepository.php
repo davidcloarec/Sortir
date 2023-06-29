@@ -58,8 +58,28 @@ class ActivityRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('a.name LIKE :string')
                 ->setParameter('string', "%{$search->string}%");
-
         }
+
+        if (!empty($search->startDate)) {
+            $query = $query
+                ->andWhere('a.startingTime >= :startDate')
+                ->setParameter('startDate' , $search->startDate);
+        }
+
+        if (!empty($search->endDate)) {
+            $query = $query
+                ->andWhere('a.startingTime <= :endDate')
+                ->setParameter('endDate', $search->endDate );
+        }
+
+//        if (!empty($search->startDate and $search->endDate)) {
+//            $query = $query
+//                ->andWhere('a.startingTime between :startDate and :endDate')
+//                ->setParameter('startDate' and 'endDate', $search->startDate and $search->endDate );
+//        }
+
+
+
 
         return $query->getQuery()->getResult();
 

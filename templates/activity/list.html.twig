@@ -19,27 +19,35 @@
 
         <div class="row">
 
-                <div class="col-md-4">
+                <div class="col-md-4 card card-subtitle p-2 bg-primary-subtle">
                     {{ form_start(form) }}
                     <div>
                         {{ form_label(form.campus) }}
                         {{ form_widget(form.campus) }}
                         {{ form_errors(form.campus) }}
                     </div>
-                    <div>
+                    <div class="mt-2">
                         {{ form_label(form.string) }}
                         {{ form_widget(form.string) }}
                         {{ form_errors(form.string) }}
                     </div>
+              <div class="row mt-2">
+                  <div class="col-sm-6">
+                      {{ form_label(form.startDate) }}
+                      {{ form_widget(form.startDate) }}
+                      {{ form_errors(form.startDate) }}
+                  </div>
+                  <div class="col-sm-6">
+                      {{ form_label(form.endDate) }}
+                      {{ form_widget(form.endDate) }}
+                      {{ form_errors(form.endDate) }}
+                  </div>
+              </div>
 
                     {{ form_end(form) }}
                 </div>
 
-{#            <div>#}
-{#                {% for activity in activities %}#}
-{#                    <td>{{ activity.campus.name }}</td>#}
-{#                {% endfor %}#}
-{#            </div>#}
+
 
             <div class="col-md-4">
                 <div>
@@ -59,9 +67,7 @@
                     <label for="past">Sorties passées</label>
                 </div>
             </div>
-{#            <div class="col-md-4">#}
-{#                <button type="submit">Rechercher</button>#}
-{#            </div>#}
+
         </div>
         <br>
     </div>

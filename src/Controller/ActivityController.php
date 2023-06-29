@@ -80,9 +80,20 @@ class ActivityController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            $startDate = $form->get("startDate")->getData();
+            $endDate = $form->get("endDate")->getData();
+
+//            var_dump($endDate);
 //            dd($search);
             $campus = $form->get("campus")->getData();
+
+            $search->startDate=$startDate;
+            $search->endDate=$endDate;
             $search->campus=$campus;
+//            dd($search);
+
+
 
             $activities = $activityRepository->findWithSearch($search);
         } else {
