@@ -2,10 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
+use App\Entity\Participant;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -44,6 +48,34 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('lastName',TextType::class,[
+                'mapped'=>false,
+                'label'=>'lastName'
+            ])
+            ->add('firstName',TextType::class,[
+                'mapped'=>false,
+                'label'=>'firstName'
+            ])
+            ->add('phone',TextType::class,[
+                'mapped'=>false,
+                'label'=>'phone'
+            ])
+            ->add('admin',CheckboxType::class,[
+                'mapped'=>false,
+                'label'=>'admin'
+            ])
+            ->add('active',CheckboxType::class,[
+                'mapped'=>false,
+                'label'=>'active'
+            ])
+            ->add('campus',EntityType::class,[
+                'class' => Campus::class,
+                'choice_label' => 'name',
+                'label'=>"Campus",
+                'multiple' => false,
+                'expanded' => false,
+                'mapped'=>false,
+            ])
         ;
     }
 
@@ -51,6 +83,7 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'cascade_validation' => true,
         ]);
     }
 }
