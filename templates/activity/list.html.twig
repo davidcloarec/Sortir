@@ -4,6 +4,7 @@
 
 {% block body %}
 
+    <div class="flash-messages">
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-dismissible alert-{{ label }} p-2">
@@ -12,6 +13,7 @@
             </div>
         {% endfor %}
     {% endfor %}
+    </div>
 
     <div class="container mt-3 text-lg-end">
        <h5>Date du jour : {{ 'now' | date('d-m-y') }}</h5>
@@ -99,6 +101,12 @@
                 </thead>
                 <tbody>
                 {% for activity in activities %}
+                    {% if (app.user.participant == activity.organizer)
+                        or  (activity.state.libelle == 'ouverte')
+                        or  (activity.state.libelle == 'cloturé')
+                        or  (activity.state.libelle == 'en cours')
+                        or  (activity.state.libelle == 'passé')
+                    %}
                     <tr>
                         <td>{{ activity.name }}</td>
                         <td>{{ activity.startingTime|date }}</td>
@@ -137,6 +145,7 @@
                             {% endif %}
                         </td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>

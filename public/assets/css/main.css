@@ -1,3 +1,23 @@
+body{
+
+}
+
+.flash-messages{
+    margin-top: 1rem;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+}
+
+.alert{
+    width: 30vw;
+    margin-left: 35vw;
+}
+
+.actions{
+    margin-top: 8vh;
+}
+
 #table_main{
     height: 300px;
     overflow-y: scroll;

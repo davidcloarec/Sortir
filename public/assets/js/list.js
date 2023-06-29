@@ -5,6 +5,7 @@ function init(){
     document.getElementById('isRegistred').addEventListener('click',setList);
     document.getElementById('isNotRegistred').addEventListener('click',setList);
     document.getElementById('past').addEventListener('click',setList);
+    setTimeout(removeAlert, 4000);
 }
 
 function setList(){
@@ -59,4 +60,10 @@ function setAll(){
     document.querySelectorAll('tr').forEach(tr=>{
         tr.hidden = false;
     })
+}
+
+function removeAlert(){
+    let alert = document.getElementsByClassName('alert').item(0);
+    alert.hidden = true;
+    console.log(alert)
 }

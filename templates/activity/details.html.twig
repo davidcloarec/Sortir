@@ -4,54 +4,73 @@
 
 {% block body %}
     <h2 class="text-center">Afficher une sortie</h2>
-    <br><br>
     <div class="container">
         {% if activity %}
-           <div class="row text-center">
-               <div class="col-md-6">
-                   <p>Nom de la sortie : {{ activity.name }}</p>
-                   <p>Date et heure de sortie : {{ activity.startingTime|date }}</p>
-                   <p>Date limite d'inscription : {{ activity.signUpLimit|date }}</p>
-                   <p>Nombre de place : {{ activity.maxSignUp }}</p>
-                   <br>
-                   <p>Durée : {{ activity.duration }} minutes</p>
-                   <p>Description et informations : {{ activity.info }}</p>
-               </div>
-               <div class="col-md-6">
-                   <p>Lieu : {{ activity.venue.name }}</p>
-                   <p>Rue : {{ activity.venue.street }}</p>
-                   <p>Ville : {{ activity.venue.city.name }}</p>
-                   <p>Code postal : {{ activity.venue.city.postalCode }}</p>
-                   <br>
-                   <p>Latitude : {{ activity.venue.latitude }}</p>
-                   <p>Longitude : {{ activity.venue.longitude }}</p>
-               </div>
-           </div>
+            <div class="d-flex mt-5">
+                <div class="col-md-4 offset-1 card">
+                    <h3 class="card-header">Nom de la sortie : {{ activity.name }}</h3>
+                    <div class="card-body">
+                        <p>Date et heure de sortie : {{ activity.startingTime|date }}</p>
+                        <p>Date limite d'inscription : {{ activity.signUpLimit|date }}</p>
+                        <p>Nombre de place : {{ activity.maxSignUp }}</p>
+                        <p>Durée : {{ activity.duration }} minutes</p>
+                        <p>Description et informations : {{ activity.info }}</p>
+                    </div>
+
+                </div>
+                <div class="col-md-4 offset-2 card">
+                    <p class="card-header">Lieu : {{ activity.venue.name }}</p>
+                    <div class="card-body">
+                        <p>Rue : {{ activity.venue.street }}</p>
+                        <p>Ville : {{ activity.venue.city.name }}</p>
+                        <p>Code postal : {{ activity.venue.city.postalCode }}</p>
+                        <br>
+                        <p>Latitude : {{ activity.venue.latitude }}</p>
+                        <p>Longitude : {{ activity.venue.longitude }}</p>
+                    </div>
+                </div>
+            </div>
         {% else %}
             <p>Il n'y a pas de sorties correspondantes à cet id en base de données.</p>
         {% endif %}
     </div>
-
-    <div class="">
-        <div class="container py-4 mt-3 rounded-3">
-            <h4 class="rounded-3">Liste des participants inscrits : </h4>
-            <br>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Pseudo</th>
-                    <th scope="col">Nom</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for participant in activity.participants %}
-                    <tr>
-                        <td>{{ participant.user.username }}</td>
-                        <td>{{ participant.lastname }}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+    <div class="d-flex">
+        <div class="col-5 offset-2">
+            <div class="container py-4 mt-3 rounded-3">
+                <h4 class="rounded-3">Liste des participants inscrits : </h4>
+                <div class="container p-0" id="table_main">
+                    <table class="table table-bordered table-striped table-hover m-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">Pseudo</th>
+                            <th scope="col">Nom</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for participant in activity.participants %}
+                            <tr>
+                                <td>{{ participant.user.username }}</td>
+                                <td>{{ participant.firstname }} {{ participant.lastname|upper }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 actions d-flex flex-column justify-content-between pb-4 ps-1 pt-1">
+            <div>
+                {% if app.user.participant in activity.participants %}
+                    {% if activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
+                        <a href="{{ path('activity_unsubscribe', {'id' : activity.id}) }}" class="btn btn-danger">Se désister</a>
+                    {% endif %}
+                {% elseif activity.state.libelle == 'ouverte' %}
+                    <a href="{{ path('activity_subscribe', {'id' : activity.id}) }}" class="btn btn-success">S'inscrire</a>
+                {% endif %}
+            </div>
+            <div class="">
+                <a href="{{ path('activity_delete', {'id' : activity.id}) }}" class="btn btn-danger">Annuler la sortie</a>
+            </div>
         </div>
     </div>
 {% endblock %}

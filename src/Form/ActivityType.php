@@ -17,22 +17,36 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
+use function Sodium\add;
 
 class ActivityType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        date_default_timezone_set('Europe/Paris');
+        $tomorrow = (new \DateTime())
+            ->add(new \DateInterval('P1D'))
+            ->format('Y-m-d');
+
+        $today = (new \DateTime());
+
         $builder
             ->add('name', null, [
                 'label'=>'Nom de la sortie : '
             ])
             ->add('startingTime', DateTimeType::class, [
                 'label'=> 'Date et heure de la sortie : ',
-                'date_widget'=>'single_text'
+                'date_widget'=>'single_text',
+                'data'=> $today
             ])
             ->add('signUpLimit', DateType::class, [
                 'label'=> 'Date limite de d\'inscription : ',
-                'widget' => 'single_text'
+                'widget' => 'single_text',
+                'attr'=>[
+                    'min' => $tomorrow,
+                    'value' => $tomorrow
+                ]
             ])
             ->add('maxSignUp', null, [
                 'label'=> 'Nombre de places : '
