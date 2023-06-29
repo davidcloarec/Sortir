@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 use function PHPUnit\Framework\equalTo;
 
 #[Route('/activity', name:'activity_')]
@@ -204,5 +205,95 @@ class ActivityController extends AbstractController
             'activity'=> $activity
         ]);
 
+    }
+
+    #[Route('/{id}/subscribe', name: 'subscribe', requirements: ["id" => "\d+"])]
+    public function subscribe(
+        $id,
+        ActivityRepository $activityRepository,
+        StateRepository $stateRepository,
+        EntityManagerInterface $entityManager
+    ):Response
+    {
+        $activity = $activityRepository->find($id);
+        if($activity->getState()->getLibelle() != "ouverte"){
+            $this->addFlash('danger','Impossible de s\'inscrire');
+        }
+        else{
+            if($activity->getParticipants()->contains($this->getUser()->getParticipant())){
+                $this->addFlash('warning','déjà inscrit !');
+            }
+            else {
+                $activity->addParticipant($this->getUser()->getParticipant());
+                if(count($activity->getParticipants())>=$activity->getMaxSignUp()){
+                    $activity->setState($stateRepository->findOneByLibelle("cloturé"));
+                }
+                $entityManager->persist($activity);
+                $entityManager->flush();
+                $this->addFlash('success','Inscription réussie !');
+            }
+        }
+        return $this->redirectToRoute('activity_list');
+    }
+
+    #[Route('/{id}/unsubscribe', name: 'unsubscribe', requirements: ["id" => "\d+"])]
+    public function unsubscribe(
+        $id,
+        ActivityRepository $activityRepository,
+        StateRepository $stateRepository,
+        EntityManagerInterface $entityManager
+    ):Response
+    {
+        $activity = $activityRepository->find($id);
+        $currentState = $activity->getState()->getLibelle();
+        $participant = $this->getUser()->getParticipant();
+
+        if($currentState == "ouverte" || $currentState == "cloturé"){
+            if($activity->getParticipants()->contains($participant)){
+                $activity->removeParticipant($participant);
+                $participant->removeActivity($activity);
+                if((new \DateTime()) < $activity->getSignUpLimit()) {
+                    $activity->setState($stateRepository->findOneByLibelle("ouverte"));
+                }
+                $entityManager->persist($activity);
+                $entityManager->persist($participant);
+                $entityManager->flush();
+                $this->addFlash('success', 'Désinscription réussie !');
+            }
+            else $this->addFlash('warning','Vous  n\'êtes pas inscrit !');
+        }
+        else $this->addFlash('danger','Erreur, impossible de se désinscrire');
+
+        return $this->redirectToRoute('activity_list');
+    }
+
+    #[Route('/{id}/publish', name: 'publish', requirements: ["id" => "\d+"])]
+    public function publish(
+        $id,
+        ActivityRepository $activityRepository,
+        StateRepository $stateRepository,
+        EntityManagerInterface $entityManager
+    ):Response
+    {
+        $activity = $activityRepository->find($id);
+        if($activity->getOrganizer() == $this->getUser()->getParticipant()
+            && $activity->getState()->getLibelle() == 'créée')
+        {
+            if((new \DateTime()) > $activity->getSignUpLimit()){
+                $this->addFlash('warning','impossible de creer la sortie, la date de cloture est déjà passé');
+            }
+            elseif((new \DateTime()) > $activity->getStartingTime()){
+                $this->addFlash('warning','impossible de creer la sortie, la date de sortie est déjà passé');
+            }
+            else{
+                $activity->setState($stateRepository->findOneByLibelle("ouverte"));
+                $entityManager->persist($activity);
+                $entityManager->flush();
+                $this->addFlash('success','la sortie à été publiée !');
+            }
+        }
+        else $this->addFlash('danger', 'vous ne pouvez pas publier cette sortie');
+
+        return $this->redirectToRoute('activity_list');
     }
 }

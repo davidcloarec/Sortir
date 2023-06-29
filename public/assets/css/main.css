@@ -1,0 +1,5 @@
+#table_main{
+    height: 300px;
+    overflow-y: scroll;
+    border: 3px solid #bfe2e9;
+}

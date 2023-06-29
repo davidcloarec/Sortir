@@ -3,7 +3,17 @@
 {% block title %}Hello ActivityController!{% endblock %}
 
 {% block body %}
-   <div class="container mt-3 text-lg-end">
+
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-{{ label }} p-2">
+                <p class="text-center">{{ message }}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="container mt-3 text-lg-end">
        <h5>Date du jour : {{ 'now' | date('d-m-y') }}</h5>
        <h5>Participant : {{ app.user.participant.firstname }} {{ app.user.participant.lastname }}</h5>
    </div>
@@ -19,14 +29,14 @@
 
         <div class="row">
 
-                <div class="col-md-4">
+                <div class="col-md-4 card card-subtitle p-2 bg-primary-subtle">
                     {{ form_start(form) }}
                     <div>
                         {{ form_label(form.campus) }}
                         {{ form_widget(form.campus) }}
                         {{ form_errors(form.campus) }}
                     </div>
-                    <div>
+                    <div class="mt-3">
                         {{ form_label(form.string) }}
                         {{ form_widget(form.string) }}
                         {{ form_errors(form.string) }}
@@ -66,11 +76,9 @@
         <br>
     </div>
 
-    <div class="">
-        <div class="container py-4 mt-3 rounded-3">
-
-            <br>
-            <table class="table">
+    <div class="col-8 offset-2 mt-3"  >
+        <div class="container p-0" id="table_main">
+            <table class="table table-bordered table-striped table-hover m-0">
                 <thead>
                 <tr>
                     <th scope="col">Nom de la sortie</th>
@@ -80,7 +88,7 @@
                     <th scope="col">Etat</th>
                     <th scope="col">Inscrit</th>
                     <th scope="col">Organisateur</th>
-                    <th scope="col">Action</th>
+                    <th scope="col" colspan="3" class="text-center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -92,23 +100,43 @@
                         <td>{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
                         <td name="state">{{ activity.state.libelle }}</td>
                         <td name="register">
-                            {% for participant in activity.participants %}
-                                {% if participant.id == app.user.participant.id %}
+                            {% if app.user.participant in activity.participants %}
                                 x
-                                {% endif %}
-                            {% endfor %}
+                            {% endif %}
                         </td>
                         <td><a href="{{ path('app_participant_show',{ "id":activity.organizer.id} ) }}"  name="organizer">{{ activity.organizer.lastname }}</a></td>
-                        <td><a href="{{ path('activity_details', {'id' : activity.id}) }}">afficher</a></td>
+                        <td>
+                            {% if activity.state.libelle != 'créée' %}
+                                <a href="{{ path('activity_details', {'id' : activity.id}) }}">Afficher</a>
+                            {% else %}
+                                <a href="{{ path('activity_update', {'id' : activity.id}) }}">Modifier</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if app.user.participant in activity.participants %}
+                                {% if activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
+                                    <a href="{{ path('activity_unsubscribe', {'id' : activity.id}) }}">Se désister</a>
+                                {% endif %}
+                            {% elseif activity.state.libelle == 'ouverte' %}
+                                <a href="{{ path('activity_subscribe', {'id' : activity.id}) }}">S'inscrire</a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if app.user.participant == activity.organizer %}
+                                {% if activity.state.libelle == 'créée' %}
+                                    <a href="{{ path('activity_publish', {'id' : activity.id}) }}">Publier</a>
+                                {% elseif activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
+                                    <a href="{{ path('activity_delete', {'id' : activity.id}) }}">Annuler</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-
-            <br>
-            <div>
-                <a href="{{ path('activity_create') }}" class="btn btn-warning">Créer une sortie</a>
-            </div>
+        </div>
+        <div class="mt-3 d-flex justify-content-end">
+            <a href="{{ path('activity_create') }}" class="btn btn-warning">Créer une sortie</a>
         </div>
     </div>
     <div hidden id="username">{{ app.user.participant.lastname }}</div>

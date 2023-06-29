@@ -43,7 +43,7 @@ class SearchType extends \Symfony\Component\Form\AbstractType
             ->add('submit', SubmitType::class, [
                 'label' => "Rechercher",
                 'attr' => [
-                    'class' => 'btn-block btn-info mt-3',
+                    'class' => 'btn btn-warning mt-3',
                 ]
             ]);
     }
