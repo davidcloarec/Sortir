@@ -35,7 +35,7 @@ class Participant
     private ?bool $active = null;
 
     #[ORM\ManyToOne(inversedBy: 'participants')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Campus $campus = null;
 
     #[ORM\ManyToMany(targetEntity: Activity::class, inversedBy: 'participants')]

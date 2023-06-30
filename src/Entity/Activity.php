@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
@@ -16,28 +18,49 @@ class Activity
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\NotBlank(message: 'La sortie doit avoir un nom')]
+    #[Assert\Length(
+        min:3, max: 255,
+        minMessage: 'Le titre doit etre superieur à 3 caractères',
+        maxMessage: 'Le titre doit etre inferieur à 255 caractères'
+    )]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[Assert\NotBlank(message: 'La date doit etre renseigné')]
+    #[Assert\GreaterThanOrEqual(value: (new \DateTime()), message: 'la date doit etre superieur à la date du jour')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $startingTime = null;
 
+
+    #[Assert\Type(type: 'integer', message: 'la durée doit etre un nombre entier')]
     #[ORM\Column]
     private ?int $duration = null;
 
+
+    #[Assert\Type(type: 'integer', message: 'le nombre max de participants doit etre un nombre entier')]
+    #[Assert\Range(
+        notInRangeMessage: 'le nombre de participant doit etre compris entre 1 et 100',
+        min: 1,
+        max: 100
+    )]
     #[ORM\Column(nullable: true)]
     private ?int $maxSignUp = null;
 
+    #[Assert\NotBlank(message: 'La date doit etre renseigné')]
+    #[Assert\GreaterThan(value: (new \DateTime()), message: 'la date doit etre superieur à la date du jour')]
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $signUpLimit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $info = null;
 
+    #[Assert\NotBlank(message: 'La sortie doit avoir un campus')]
     #[ORM\ManyToOne(inversedBy: 'activity')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
 
+    #[Assert\NotBlank(message: 'La sortie doit avoir un lieu')]
     #[ORM\ManyToOne(inversedBy: 'activities')]
     private ?Venue $venue = null;
 

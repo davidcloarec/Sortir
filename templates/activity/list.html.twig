@@ -101,7 +101,8 @@
                 </thead>
                 <tbody>
                 {% for activity in activities %}
-                    {% if (app.user.participant == activity.organizer)
+                    {% if (app.user.participant == activity.organizer
+                        and activity.state.libelle != 'archivée')
                         or  (activity.state.libelle == 'ouverte')
                         or  (activity.state.libelle == 'cloturé')
                         or  (activity.state.libelle == 'en cours')
@@ -113,9 +114,14 @@
                         <td>{{ activity.signUpLimit|date('d/m/Y') }}</td>
                         <td>{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
                         <td name="state">{{ activity.state.libelle }}</td>
-                        <td name="register">
+                        <td name="register"
                             {% if app.user.participant in activity.participants %}
-                                x
+                                class="bg-success-subtle">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{ asset('assets/img/logovalide.png') }}" alt="" height="20px">
+                            </div>
+                            {% else %}
+                            >
                             {% endif %}
                         </td>
                         <td><a href="{{ path('app_participant_show',{ "id":activity.organizer.id} ) }}"  name="organizer">{{ activity.organizer.lastname }}</a></td>

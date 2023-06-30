@@ -59,20 +59,14 @@ class ParticipantController extends AbstractController
 
 //    #[isGranted("ROLE_ADMIN")]
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, ParticipantRepository $participantRepository, UserRepository $userRepository,SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Participant $participant, ImageRepository $imageRepository, ParticipantRepository $participantRepository, UserRepository $userRepository,SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image')->getData();
-            $image = new Image();
+            $imageFile = $form->get('image')->getData();;
             if ($imageFile) {
-
                 $previousImage = $participant->getImage();
-                if (isset($previousImage)) {
-                    $entityManager->remove($previousImage);
-                    $entityManager->flush();
-                }
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // On viens nettoyer le nom du fichier pour éviter tout problème dans l'URL
                 $safeFilename = $slugger->slug($originalFilename);
@@ -86,11 +80,9 @@ class ParticipantController extends AbstractController
                     // ... On gère l'exception
                 }
                 // On enregistre le nom du fichier plutôt que le fichier lui même
-                $image->setImageFile($newFilename);
+                $previousImage->setImageFile($newFilename);
             }
-
             $user = $participant->getUser();
-            $participant->setImage($image);
             $user->setEmail($participant->getMail());
             $user->setUsername($form->get("username")->getData());
             $userRepository->save($user, true);

@@ -25,11 +25,8 @@ class ActivityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         date_default_timezone_set('Europe/Paris');
-        $tomorrow = (new \DateTime())
-            ->add(new \DateInterval('P1D'))
-            ->format('Y-m-d');
-
-        $today = (new \DateTime());
+        $today = new \DateTime();
+        $tomorrow = $today->add(new \DateInterval('P1D'));
 
         $builder
             ->add('name', null, [
@@ -37,15 +34,16 @@ class ActivityType extends AbstractType
             ])
             ->add('startingTime', DateTimeType::class, [
                 'label'=> 'Date et heure de la sortie : ',
-                'date_widget'=>'single_text',
+                'widget'=>'single_text',
                 'data'=> $today
+
             ])
             ->add('signUpLimit', DateType::class, [
                 'label'=> 'Date limite de d\'inscription : ',
                 'widget' => 'single_text',
                 'attr'=>[
-                    'min' => $tomorrow,
-                    'value' => $tomorrow
+                    'min' => $tomorrow->format('Y-m-d'),
+                    'value' => $tomorrow->format('Y-m-d')
                 ]
             ])
             ->add('maxSignUp', null, [
