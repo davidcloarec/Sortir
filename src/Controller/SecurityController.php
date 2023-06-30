@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Form\ResetPasswordFormType;
 use App\Form\ResetPasswordRequestFormType;
 use App\Repository\UserRepository;
+use App\Service\SendMailService;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,15 +76,15 @@ class SecurityController extends AbstractController
                 $mail->send(
                     'no-reply@sortir.fr',
                     $user->getEmail(),
-                    'Réinitialisation de mot de passe',
-                    'password_reset',//teplate
+                    'Réinitialisation de votre mot de passe',
+                    'password_reset',//template
                     $context
                 );
 
                 $this->addFlash('success', "Email envoyé avec succès");
                 return  $this->redirectToRoute('app_login');
-
             }
+
             //$user est null
             $this->addFlash('danger', 'Un problème est survenu');
             return $this->redirectToRoute('app_login');
@@ -101,11 +103,11 @@ class SecurityController extends AbstractController
         UserPasswordHasherInterface $userPasswordHasher
     ): Response
     {
-        //check si ce token en bddd
+        //check si ce token en bdd
         $user = $userRepository->findOneByResetToken($token);
 //        dd($user);
         if($user){
-            $form = $this->createForm(ResetPasswordRequestFormType::class);
+            $form = $this->createForm(ResetPasswordFormType::class);
 
             $form->handleRequest($request);
 
@@ -118,6 +120,7 @@ class SecurityController extends AbstractController
                         $form->get('password')->getData()
                     )
                 );
+
                 $entityManager->persist($user);
                 $entityManager->flush();
 
@@ -130,8 +133,6 @@ class SecurityController extends AbstractController
         }
         $this->addFlash('danger', 'jeton invalide');
         return $this->redirectToRoute('app_login');
-
-        return ;
     }
 
     #[Route(path: '/logout', name: 'app_logout')]

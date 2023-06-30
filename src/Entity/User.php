@@ -137,6 +137,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**Assesseur resetPassword**/
+
+
     /**
      * @return mixed
      */
@@ -153,4 +156,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->resetToken = $resetToken;
         return  $this;
     }
+
 }
