@@ -20,8 +20,8 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('/participant')]
 class ParticipantController extends AbstractController
 {
-    #[isGranted("ROLE_ADMIN")]
-    #[Route('/', name: 'app_participant_index', methods: ['GET'])]
+
+    #[Route('/admin', name: 'app_participant_index', methods: ['GET'])]
     public function index(ParticipantRepository $participantRepository): Response
     {
         return $this->render('participant/index.html.twig', [
