@@ -30,8 +30,8 @@ class Venue
     #[ORM\OneToMany(mappedBy: 'venue', targetEntity: Activity::class)]
     private Collection $activities;
 
-    #[ORM\ManyToOne(inversedBy: 'venue')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ['remove'],inversedBy: 'venue')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?City $city = null;
 
     public function __construct()

@@ -4,9 +4,6 @@ namespace App\Controller;
 
 use App\classe\Search;
 use App\Entity\Activity;
-use App\Entity\Campus;
-use App\Entity\Participant;
-use App\Entity\State;
 use App\Form\ActivityType;
 use App\Form\SearchType;
 use App\Repository\ActivityRepository;
@@ -17,13 +14,9 @@ use App\Repository\StateRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Date;
-use function PHPUnit\Framework\equalTo;
 
 #[Route('/activity', name:'activity_')]
 class ActivityController extends AbstractController

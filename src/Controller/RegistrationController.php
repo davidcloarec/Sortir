@@ -14,12 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[Route('/admin/register',name:'app_')]
 class RegistrationController extends AbstractController
 {
-    #[isGranted("ROLE_ADMIN")]
-    #[Route('/register', name: 'app_register')]
+
+    #[Route('/', name: 'register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -60,8 +60,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[isGranted("ROLE_ADMIN")]
-    #[Route('/register/csv', name: 'app_register_csv')]
+    #[Route('/csv', name: 'register_csv')]
     public function registerWithCSV(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager,CampusRepository $campusRepository): Response
     {
         $form = $this->createForm(UserParticipantCSVType::class);

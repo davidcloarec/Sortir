@@ -24,9 +24,9 @@
                     <td id="city">{{ city.name }}</td>
                     <td id="postalcode">{{ city.postalCode }}</td>
                     <td>
-                        <a href="{{ path("app_city_edit",{"id":city.id}) }}">Modifier</a>
+                        <a class="btn btn-warning" href="{{ path("app_city_edit",{"id":city.id}) }}">Modifier</a>
                         -
-                        <a href="">Supprimer</a>
+                        <a class="btn btn-danger" href="{{ path("app_city_delete",{"id":city.id} ) }}">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}

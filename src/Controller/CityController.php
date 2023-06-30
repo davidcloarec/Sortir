@@ -7,14 +7,16 @@ use App\Form\CityType;
 use App\Repository\CityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[Route('/city', name:'app_city_')]
 class CityController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/admin/', name: 'index')]
     public function index(CityRepository $cityRepository): Response
     {
         $cities = $cityRepository->findAll();
@@ -24,7 +26,7 @@ class CityController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'edit')]
+    #[Route('/admin/{id}/edit', name: 'edit')]
     public function editCity(CityRepository $cityRepository,EntityManagerInterface $entityManager,$id,Request $request): Response
     {
         $city = $cityRepository->find($id);
@@ -42,6 +44,7 @@ class CityController extends AbstractController
         ]);
     }
 
+
     #[Route('/new', name: 'new')]
     public function newCity(EntityManagerInterface $entityManager,Request $request): Response
     {
@@ -57,5 +60,15 @@ class CityController extends AbstractController
             'controller_name' => 'CityController',
             'form'=>$form,
         ]);
+    }
+
+    #[Route('/admin/{id}/delete',name:'delete')]
+    public function deleteCity(CityRepository $cityRepository,$id): RedirectResponse
+    {
+        $city = $cityRepository->find($id);
+        if($city){
+            $cityRepository->remove($city,true);
+        }
+        return $this->redirectToRoute('app_city_index');
     }
 }

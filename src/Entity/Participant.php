@@ -35,7 +35,7 @@ class Participant
     private ?bool $active = null;
 
     #[ORM\ManyToOne(inversedBy: 'participants')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?Campus $campus = null;
 
     #[ORM\ManyToMany(targetEntity: Activity::class, inversedBy: 'participants')]
@@ -49,6 +49,7 @@ class Participant
     private ?User $user = null;
 
     #[ORM\OneToOne(mappedBy: 'participant', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable:true)]
     private ?Image $image = null;
 
     public function __construct()

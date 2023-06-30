@@ -34,8 +34,8 @@ class Activity
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $info = null;
 
-    #[ORM\ManyToOne(inversedBy: 'activity')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade:['remove'],inversedBy: 'activity')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Campus $campus = null;
 
     #[ORM\ManyToOne(inversedBy: 'activities')]
