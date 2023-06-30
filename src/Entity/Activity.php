@@ -56,8 +56,9 @@ class Activity
     private ?string $info = null;
 
     #[Assert\NotBlank(message: 'La sortie doit avoir un campus')]
-    #[ORM\ManyToOne(inversedBy: 'activity')]
     #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade:['remove'],inversedBy: 'activity')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Campus $campus = null;
 
     #[Assert\NotBlank(message: 'La sortie doit avoir un lieu')]

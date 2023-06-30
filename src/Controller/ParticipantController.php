@@ -14,14 +14,12 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/participant')]
 class ParticipantController extends AbstractController
 {
-
-    #[Route('/admin', name: 'app_participant_index', methods: ['GET'])]
+    #[Route('/admin/', name: 'app_participant_index', methods: ['GET'])]
     public function index(ParticipantRepository $participantRepository): Response
     {
         return $this->render('participant/index.html.twig', [
@@ -29,8 +27,7 @@ class ParticipantController extends AbstractController
         ]);
     }
 
-    #[isGranted("ROLE_ADMIN")]
-    #[Route('/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
+    #[Route('/admin/new', name: 'app_participant_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ParticipantRepository $participantRepository): Response
     {
         $participant = new Participant();
@@ -57,10 +54,10 @@ class ParticipantController extends AbstractController
         ]);
     }
 
-//    #[isGranted("ROLE_ADMIN")]
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Participant $participant, ImageRepository $imageRepository, ParticipantRepository $participantRepository, UserRepository $userRepository,SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
+        // TODO : Controle utilisateur
         $form = $this->createForm(ParticipantType::class, $participant);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -97,7 +94,7 @@ class ParticipantController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_participant_delete', methods: ['POST'])]
+    #[Route('/admin/{id}', name: 'app_participant_delete', methods: ['POST'])]
     public function delete(Request $request, Participant $participant, ParticipantRepository $participantRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $participant->getId(), $request->request->get('_token'))) {

@@ -22,9 +22,9 @@
                 <tr id="{{ campus.name|lower }}">
                     <td id="campus">{{ campus.name }}</td>
                     <td>
-                        <a href="{{ path("app_campus_edit",{"id":campus.id}) }}">Modifier</a>
+                        <a class="btn btn-warning" href="{{ path("app_campus_edit",{"id":campus.id}) }}">Modifier</a>
                         -
-                        <a href="">Supprimer</a>
+                        <a class="btn btn-danger" href="{{ path("app_campus_delete",{"id":campus.id} ) }}">Supprimer</a>
                     </td>
                 </tr>
             {% endfor %}

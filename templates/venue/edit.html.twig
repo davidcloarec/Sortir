@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="text-center">Editer un lieu : {{ venue.name }}</div>
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 offset-md-5 mt-4">
+            {{ form_label(form.name) }}
+            {{ form_widget(form.name, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_errors(form.name) }}
+        </div>
+        <div class="col-md-6 offset-md-5 mt-2">
+            {{ form_label(form.street) }}
+            {{ form_widget(form.street, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_errors(form.street) }}
+        </div>
+        <div class="col-md-6 offset-md-5 mt-2">
+            {{ form_label(form.latitude) }}
+            {{ form_widget(form.latitude, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_errors(form.latitude) }}
+        </div>
+        <div class="col-md-6 offset-md-5 mt-2">
+            {{ form_label(form.longitude) }}
+            {{ form_widget(form.longitude, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_errors(form.longitude) }}
+        </div>
+        <div class="col-md-6 offset-md-5 mt-2">
+            {{ form_label(form.city) }}
+            {{ form_widget(form.city, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_errors(form.city) }}
+        </div>
+    </div>
+    <div class="col-md-4 offset-md-5 mt-3">
+        <div class="d-flex justify-content-between col-6">
+            <button class="btn btn-success">Enregistrer</button>
+            <a class="btn btn-danger" href="{{ path("app_venue_index") }}">Annuler</a>
+        </div>
+    </div>
+
+
+
+
+    {{ form_end(form) }}
+
+{% endblock %}

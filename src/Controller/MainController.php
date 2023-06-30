@@ -9,7 +9,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class MainController extends AbstractController
 {
-    #[IsGranted("ROLE_USER")]
+
     #[Route('/main', name: 'app_main')]
     public function index(): Response
     {
