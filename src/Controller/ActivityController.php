@@ -150,7 +150,10 @@ class ActivityController extends AbstractController
         $cities = $cityRepository->findAll();
 
         //verif droits
-        if($activity->getState()->getLibelle() != "créée"){
+        if($activity->getState()->getLibelle() != "créée"
+            || $activity->getOrganizer() != $this->getUser()->getParticipant()
+        ){
+            $this->addFlash('warning', 'Vous n\'avez pas accès à cette page');
             return $this->redirectToRoute('activity_list');
         }
 
@@ -192,7 +195,43 @@ class ActivityController extends AbstractController
         $activity = $activityRepository->find($id);
 
         //verif droits
-        if($activity->getState()->getLibelle() != "ouverte"){
+        if($activity->getState()->getLibelle() != "ouverte"
+            || $activity->getOrganizer() != $this->getUser()->getParticipant()
+        ){
+            $this->addFlash('warning', 'Vous n\'avez pas accès à cette page');
+            return $this->redirectToRoute('activity_list');
+        }
+
+        if($request->get('cancelMotive') != null){
+            $state = $stateRepository->findOneByLibelle("annulée");
+            $activity->setCancelMotive($request->get('cancelMotive'));
+            $activity->setState($state);
+            $entityManager->persist($activity);
+            $entityManager->flush();
+            $this->addFlash("success", "Sortie annulée");
+            return $this->redirectToRoute('activity_list');
+        }
+
+        return $this->render('activity/delete.html.twig', [
+            'activity'=> $activity
+        ]);
+
+    }
+
+    #[Route('/{id}/admin/delete', name: 'delete_admin', requirements: ["id" => "\d+"])]
+    public function deleteAdmin(
+        $id,
+        EntityManagerInterface $entityManager,
+        ActivityRepository $activityRepository,
+        StateRepository $stateRepository,
+        Request $request): Response
+    {
+        $activity = $activityRepository->find($id);
+        $libelle = $activity->getState()->getLibelle();
+
+        //verif droits
+        if($libelle != "créée" && $libelle != "ouverte" && $libelle != "cloturé"){
+            $this->addFlash('warning', 'la sortie ne peut plus etre annulé');
             return $this->redirectToRoute('activity_list');
         }
 

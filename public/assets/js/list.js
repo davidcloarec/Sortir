@@ -34,7 +34,7 @@ function setList(){
 function organized(){
     let username = document.getElementById('username').innerHTML;
     document.getElementsByName('organizer').forEach(name=>{
-        if(name.innerHTML === username) name.closest("tr").hidden = false;
+        if(name.innerHTML.includes(username)) name.closest("tr").hidden = false;
     })
 }
 
@@ -63,7 +63,7 @@ function setAll(){
 }
 
 function removeAlert(){
-    let alert = document.getElementsByClassName('alert').item(0);
-    alert.hidden = true;
-    console.log(alert)
+    for (let alert of document.getElementsByClassName('alert')) {
+        alert.remove();
+    }
 }

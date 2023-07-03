@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    <div class="flash-messages">
+    <div id="flashes" class="flash-messages">
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="alert alert-dismissible alert-{{ label }} p-2">
@@ -14,10 +14,14 @@
         {% endfor %}
     {% endfor %}
     </div>
-
-    <div class="container mt-3 text-lg-end">
+    <div id="profilepic" class="mt-5">
+        {% if app.user.participant.image %}
+            <img src="{{ asset("uploads/profile_images/") }}{{ app.user.participant.image.imageFile }}" alt="">
+        {% endif %}
+    </div>
+    <div class="container mt-5 text-lg-end">
        <h5>Date du jour : {{ 'now' | date('d-m-y') }}</h5>
-       <h5>Participant : {{ app.user.participant.firstname }} {{ app.user.participant.lastname }}</h5>
+       <h5>Participant : <b id="username">{{ app.user.participant.firstname }} {{ app.user.participant.lastname|first|upper }}.</b></h5>
    </div>
     <br>
     <br>
@@ -84,7 +88,7 @@
         <br>
     </div>
 
-    <div class="col-8 offset-2 mt-3"  >
+    <div class="col-8 offset-2 mt-1"  >
         <div class="container p-0" id="table_main">
             <table class="table table-bordered table-striped table-hover m-0">
                 <thead>
@@ -112,7 +116,7 @@
                         <td>{{ activity.name }}</td>
                         <td>{{ activity.startingTime|date('d/m/Y H:i') }}</td>
                         <td>{{ activity.signUpLimit|date('d/m/Y') }}</td>
-                        <td>{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
+                        <td style="width: 12%">{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
                         <td name="state">{{ activity.state.libelle }}</td>
                         <td name="register"
                             {% if app.user.participant in activity.participants %}
@@ -124,29 +128,40 @@
                             >
                             {% endif %}
                         </td>
-                        <td><a href="{{ path('app_participant_show',{ "id":activity.organizer.id} ) }}"  name="organizer">{{ activity.organizer.lastname }}</a></td>
-                        <td>
+                        <td style="width: 10%">
+                            <a href="{{ path('app_participant_show',{ "id":activity.organizer.id} ) }}"  name="organizer">
+                                {{ activity.organizer.firstname }} {{ activity.organizer.lastname|first|upper }}.
+                            </a>
+                        </td>
+                        <td style="width: 5%">
                             {% if activity.state.libelle != 'créée' %}
-                                <a href="{{ path('activity_details', {'id' : activity.id}) }}">Afficher</a>
+                                <a class="btn btn-info col-12" href="{{ path('activity_details', {'id' : activity.id}) }}">Afficher</a>
                             {% else %}
-                                <a href="{{ path('activity_update', {'id' : activity.id}) }}">Modifier</a>
+                                <a class="btn btn-warning col-12" href="{{ path('activity_update', {'id' : activity.id}) }}">Modifier</a>
                             {% endif %}
                         </td>
-                        <td>
+                        <td style="width: 10%">
                             {% if app.user.participant in activity.participants %}
                                 {% if activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
-                                    <a href="{{ path('activity_unsubscribe', {'id' : activity.id}) }}">Se désister</a>
+                                    <a class="btn btn-danger col-12" href="{{ path('activity_unsubscribe', {'id' : activity.id}) }}">Se désister</a>
                                 {% endif %}
                             {% elseif activity.state.libelle == 'ouverte' %}
-                                <a href="{{ path('activity_subscribe', {'id' : activity.id}) }}">S'inscrire</a>
+                                <a class="btn btn-success col-12" href="{{ path('activity_subscribe', {'id' : activity.id}) }}">S'inscrire</a>
                             {% endif %}
                         </td>
-                        <td>
+                        <td style="width: 5%">
                             {% if app.user.participant == activity.organizer %}
                                 {% if activity.state.libelle == 'créée' %}
-                                    <a href="{{ path('activity_publish', {'id' : activity.id}) }}">Publier</a>
+                                    <a class="btn btn-warning col-12" href="{{ path('activity_publish', {'id' : activity.id}) }}">Publier</a>
                                 {% elseif activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
-                                    <a href="{{ path('activity_delete', {'id' : activity.id}) }}">Annuler</a>
+                                    <a class="btn btn-danger col-12" href="{{ path('activity_delete', {'id' : activity.id}) }}">Annuler</a>
+                                {% endif %}
+                            {% else %}
+                                {% if 'ROLE_ADMIN' in app.user.roles
+                                    and activity.state.libelle == 'ouverte'
+                                    or activity.state.libelle == 'cloturé'
+                                %}
+                                    <a class="btn btn-danger col-12" href="{{ path('activity_delete_admin', {'id' : activity.id}) }}">Annuler</a>
                                 {% endif %}
                             {% endif %}
                         </td>
@@ -160,6 +175,5 @@
             <a href="{{ path('activity_create') }}" class="btn btn-warning">Créer une sortie</a>
         </div>
     </div>
-    <div hidden id="username">{{ app.user.participant.lastname }}</div>
     <script type="text/javascript" src="{{ asset('assets/js/list.js') }}"></script>
 {% endblock %}

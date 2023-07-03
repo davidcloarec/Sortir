@@ -23,3 +23,11 @@ body{
     overflow-y: scroll;
     border: 3px solid #bfe2e9;
 }
+
+#profilepic{
+    position: absolute;
+    flex-direction: row-reverse;
+    width: 95%;
+    display: flex;
+    height: 100px;
+}

@@ -26,6 +26,7 @@ class SearchType extends \Symfony\Component\Form\AbstractType
             ->add('campus', EntityType::class,[
                 'class' => Campus::class,
                 'label' => "Campus : ",
+                "placeholder" => 'Tous les campus',
                 'multiple' => false,
                 'required' => false,
                 'expanded'=> false,
