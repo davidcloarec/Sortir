@@ -26,45 +26,41 @@
     <br>
     <br>
     <div class="container">
-
         <div>
             <h5>Filtrer les sorties</h5>
             <br>
         </div>
-
-
         <div class="row">
-
-                <div class="col-md-4 card card-subtitle p-2 bg-primary-subtle">
-                    {{ form_start(form) }}
-                    <div>
-                        {{ form_label(form.campus) }}
-                        {{ form_widget(form.campus) }}
-                        {{ form_errors(form.campus) }}
-                    </div>
-                    <div class="mt-2">
-                        {{ form_label(form.string) }}
-                        {{ form_widget(form.string) }}
-                        {{ form_errors(form.string) }}
-                    </div>
-              <div class="row mt-2">
-                  <div class="col-sm-6">
+            <div class="col-md-4 card card-subtitle p-2 bg-primary-subtle" id="test">
+                {{ form_start(form) }}
+                <div>
+                    {{ form_label(form.campus) }}
+                    {{ form_widget(form.campus) }}
+                    {{ form_errors(form.campus) }}
+                </div>
+                <div class="mt-2">
+                    {{ form_label(form.string) }}
+                    {{ form_widget(form.string) }}
+                    {{ form_errors(form.string) }}
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-6">
                       {{ form_label(form.startDate) }}
                       {{ form_widget(form.startDate) }}
                       {{ form_errors(form.startDate) }}
-                  </div>
-                  <div class="col-sm-6">
+                    </div>
+                    <div class="col-sm-6">
                       {{ form_label(form.endDate) }}
                       {{ form_widget(form.endDate) }}
                       {{ form_errors(form.endDate) }}
-                  </div>
-              </div>
-
-                    {{ form_end(form) }}
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between" id="formSubmit">
+                    {{ form_row(form.submit) }}
                 </div>
 
-
-
+                {{ form_end(form) }}
+            </div>
             <div class="col-md-4">
                 <div>
                     <input type="checkbox" id="isOrganized" name="isOrganized">
@@ -83,97 +79,100 @@
                     <label for="past">Sorties passées</label>
                 </div>
             </div>
-
         </div>
         <br>
     </div>
 
-    <div class="col-8 offset-2 mt-1"  >
-        <div class="container p-0" id="table_main">
-            <table class="table table-bordered table-striped table-hover m-0">
-                <thead>
-                <tr>
-                    <th scope="col">Nom de la sortie</th>
-                    <th scope="col">Date de la sortie</th>
-                    <th scope="col">Clôture</th>
-                    <th scope="col">Inscrits / places</th>
-                    <th scope="col">Etat</th>
-                    <th scope="col">Inscrit</th>
-                    <th scope="col">Organisateur</th>
-                    <th scope="col" colspan="3" class="text-center">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for activity in activities %}
-                    {% if (app.user.participant == activity.organizer
-                        and activity.state.libelle != 'archivée')
-                        or  (activity.state.libelle == 'ouverte')
-                        or  (activity.state.libelle == 'cloturé')
-                        or  (activity.state.libelle == 'en cours')
-                        or  (activity.state.libelle == 'passé')
-                    %}
+    <div class="col-md-8 offset-md-2 col-sm-12 offset-sm-0 mt-1" id="divTable">
+        <div class="container-fluid p-0" id="table_main">
+            <div id="no-more-tables">
+                <table class="table table-bordered table-striped table-hover m-0">
+                    <thead>
                     <tr>
-                        <td>{{ activity.name }}</td>
-                        <td>{{ activity.startingTime|date('d/m/Y H:i') }}</td>
-                        <td>{{ activity.signUpLimit|date('d/m/Y') }}</td>
-                        <td style="width: 12%">{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
-                        <td name="state">{{ activity.state.libelle }}</td>
-                        <td name="register"
-                            {% if app.user.participant in activity.participants %}
-                                class="bg-success-subtle">
-                            <div class="d-flex justify-content-center">
-                                <img src="{{ asset('assets/img/logovalide.png') }}" alt="" height="20px">
-                            </div>
-                            {% else %}
-                            >
-                            {% endif %}
-                        </td>
-                        <td style="width: 10%">
-                            <a href="{{ path('app_participant_show',{ "id":activity.organizer.id} ) }}"  name="organizer">
-                                {{ activity.organizer.firstname }} {{ activity.organizer.lastname|first|upper }}.
-                            </a>
-                        </td>
-                        <td style="width: 5%">
-                            {% if activity.state.libelle != 'créée' %}
-                                <a class="btn btn-info col-12" href="{{ path('activity_details', {'id' : activity.id}) }}">Afficher</a>
-                            {% else %}
-                                <a class="btn btn-warning col-12" href="{{ path('activity_update', {'id' : activity.id}) }}">Modifier</a>
-                            {% endif %}
-                        </td>
-                        <td style="width: 10%">
-                            {% if app.user.participant in activity.participants %}
-                                {% if activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
-                                    <a class="btn btn-danger col-12" href="{{ path('activity_unsubscribe', {'id' : activity.id}) }}">Se désister</a>
-                                {% endif %}
-                            {% elseif activity.state.libelle == 'ouverte' %}
-                                <a class="btn btn-success col-12" href="{{ path('activity_subscribe', {'id' : activity.id}) }}">S'inscrire</a>
-                            {% endif %}
-                        </td>
-                        <td style="width: 5%">
-                            {% if app.user.participant == activity.organizer %}
-                                {% if activity.state.libelle == 'créée' %}
-                                    <a class="btn btn-warning col-12" href="{{ path('activity_publish', {'id' : activity.id}) }}">Publier</a>
-                                {% elseif activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
-                                    <a class="btn btn-danger col-12" href="{{ path('activity_delete', {'id' : activity.id}) }}">Annuler</a>
-                                {% endif %}
-                            {% else %}
-                                {% if 'ROLE_ADMIN' in app.user.roles
-                                    and activity.state.libelle == 'ouverte'
-                                    or activity.state.libelle == 'cloturé'
-                                %}
-                                    <a class="btn btn-danger col-12" href="{{ path('activity_delete_admin', {'id' : activity.id}) }}">Annuler</a>
-                                {% endif %}
-                            {% endif %}
-                        </td>
+                        <th scope="col">Nom de la sortie</th>
+                        <th scope="col">Date de la sortie</th>
+                        <th scope="col">Clôture</th>
+                        <th scope="col">Inscrits / places</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">Inscrit</th>
+                        <th scope="col">Organisateur</th>
+                        <th scope="col" colspan="3" class="text-center">Actions</th>
                     </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for activity in activities %}
+                        {% if (app.user.participant == activity.organizer
+                            and activity.state.libelle != 'archivée')
+                            or  (activity.state.libelle == 'ouverte')
+                            or  (activity.state.libelle == 'cloturé')
+                            or  (activity.state.libelle == 'en cours')
+                            or  (activity.state.libelle == 'passé')
+                        %}
+                        <tr>
+                            <td data-title="Nom de la sortie">{{ activity.name }}</td>
+                            <td data-title="Date de la sortie">{{ activity.startingTime|date('d/m/Y H:i') }}</td>
+                            <td data-title="Clôture">{{ activity.signUpLimit|date('d/m/Y') }}</td>
+                            <td data-title="Inscrits / places">{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
+                            <td data-title="Etat" name="state">{{ activity.state.libelle }}</td>
+                            <td data-title="Inscrit" name="register"
+                                {% if app.user.participant in activity.participants %}
+                                    class="bg-success-subtle">
+                                <div class="d-flex justify-content-center">
+                                    <img src="{{ asset('assets/img/logovalide.png') }}" alt="" height="20px">
+                                </div>
+                                {% else %}
+                                >
+                                    &nbsp
+                                {% endif %}
+                            </td>
+                            <td data-title="Organisateur">
+                                <a href="{{ path('app_participant_show',{ "id":activity.organizer.id} ) }}"  name="organizer">
+                                    {{ activity.organizer.firstname }} {{ activity.organizer.lastname|first|upper }}.
+                                </a>
+                            </td>
+                            <td class="notrowOne" data-title="Actions">
+                                {% if activity.state.libelle != 'créée' %}
+                                    <a class="btn btn-info col-12" href="{{ path('activity_details', {'id' : activity.id}) }}">Afficher</a>
+                                {% else %}
+                                    <a class="btn btn-warning col-12" href="{{ path('activity_update', {'id' : activity.id}) }}">Modifier</a>
+                                {% endif %}
+                            </td>
+                            <td class="notrowTwo">
+                                {% if app.user.participant in activity.participants %}
+                                    {% if activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
+                                        <a class="btn btn-danger col-12" href="{{ path('activity_unsubscribe', {'id' : activity.id}) }}">Se désister</a>
+                                    {% endif %}
+                                {% elseif activity.state.libelle == 'ouverte' %}
+                                    <a class="btn btn-success col-12" href="{{ path('activity_subscribe', {'id' : activity.id}) }}">S'inscrire</a>
+                                {% endif %}
+                            </td>
+                            <td class="notrowThree">
+                                {% if app.user.participant == activity.organizer %}
+                                    {% if activity.state.libelle == 'créée' %}
+                                        <a class="btn btn-warning col-12" href="{{ path('activity_publish', {'id' : activity.id}) }}">Publier</a>
+                                    {% elseif activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé' %}
+                                        <a class="btn btn-danger col-12" href="{{ path('activity_delete', {'id' : activity.id}) }}">Annuler</a>
+                                    {% endif %}
+                                {% else %}
+                                    {% if 'ROLE_ADMIN' in app.user.roles
+                                        and activity.state.libelle == 'ouverte'
+                                        or activity.state.libelle == 'cloturé'
+                                    %}
+                                        <a class="btn btn-danger col-12" href="{{ path('activity_delete_admin', {'id' : activity.id}) }}">Annuler</a>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="mt-3 d-flex justify-content-end">
+        <div class="mt-3 d-flex justify-content-end" id="create">
             <a href="{{ path('activity_create') }}" class="btn btn-warning">Créer une sortie</a>
         </div>
+        <br>
     </div>
     <script type="text/javascript" src="{{ asset('assets/js/list.js') }}"></script>
 {% endblock %}

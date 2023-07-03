@@ -63,12 +63,13 @@ class ParticipantController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $imageFile = $form->get('image')->getData();
-                $image = new Image();
                 if ($imageFile) {
-
-                    $previousImage = $participant->getImage();
-                    if (isset($previousImage)) {
-                        $imageRepository->remove($previousImage,true);
+                    if($participant->getImage()){
+                        $image = $participant->getImage();
+                    }
+                    else{
+                        $image = new Image();
+                        $participant->setImage($image);
                     }
                     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // On viens nettoyer le nom du fichier pour éviter tout problème dans l'URL
@@ -87,13 +88,12 @@ class ParticipantController extends AbstractController
                 }
 
                 $user = $participant->getUser();
-                $participant->setImage($image);
                 $user->setEmail($participant->getMail());
                 $user->setUsername($form->get("username")->getData());
                 $userRepository->save($user, true);
                 $participantRepository->save($participant, true);
 
-                return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('activity_list', [], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('participant/edit.html.twig', [
