@@ -15,7 +15,7 @@ class Image
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageFile = null;
 
     #[ORM\OneToOne(inversedBy: 'image', cascade: ['persist', 'remove'])]
