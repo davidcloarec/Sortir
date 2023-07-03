@@ -43,6 +43,15 @@
                 {{ form_errors(form.firstname) }}
             </div>
         </div>
+        {% if app.user.id==participant.user.id %}
+            <div class="form-row">
+                <div class="form-group col-md-6 p-2">
+                    {{ form_label(form.plainPassword) }}
+                    {{ form_widget(form.plainPassword, {'attr':{'class': 'form-control'} }) }}
+                    {{ form_errors(form.plainPassword) }}
+                </div>
+            </div>
+        {% endif %}
         <div class="form-row">
             <div class="form-group col-md-6 p-2">
                 {{ form_label(form.lastname) }}
@@ -71,19 +80,21 @@
                 {{ form_errors(form.phone) }}
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-6 p-2">
-                <div class="d-flex justify-content-around p-2">
-                    {{ form_label(form.admin) }}
-                    {{ form_widget(form.admin) }}
-                    {{ form_errors(form.admin) }}
+{#        {% if is_granted("ROLE_ADMIN") %}#}
+{#            <div class="form-row">#}
+{#                <div class="form-group col-md-6 p-2">#}
+{#                    <div class="d-flex justify-content-around p-2">#}
+{#                        {{ form_label(form.admin) }}#}
+{#                        {{ form_widget(form.admin) }}#}
+{#                        {{ form_errors(form.admin) }}#}
 
-                    {{ form_label(form.active) }}
-                    {{ form_widget(form.active) }}
-                    {{ form_errors(form.active) }}
-                </div>
-            </div>
-        </div>
+{#                        {{ form_label(form.active) }}#}
+{#                        {{ form_widget(form.active) }}#}
+{#                        {{ form_errors(form.active) }}#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endif %}#}
         <div class="form-row">
             <div class="form-group col-md-6 p-2">
                 {{ form_label(form.image) }}

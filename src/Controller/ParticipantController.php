@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -55,25 +56,26 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, ImageRepository $imageRepository, ParticipantRepository $participantRepository, UserRepository $userRepository,SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Participant $participant, UserPasswordHasherInterface $userPasswordHasher, ImageRepository $imageRepository, ParticipantRepository $participantRepository, UserRepository $userRepository, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
         $loggedUser = $this->getUser();
-        if(in_array('ROLE_ADMIN',$loggedUser->getRoles()) || $loggedUser->getParticipant()->getId()===$participant->getId()){
+        if (in_array('ROLE_ADMIN', $loggedUser->getRoles()) || $loggedUser->getParticipant()->getId() === $participant->getId()) {
             $form = $this->createForm(ParticipantType::class, $participant);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $imageFile = $form->get('image')->getData();
-                $image = new Image();
                 if ($imageFile) {
-
-                    $previousImage = $participant->getImage();
-                    if (isset($previousImage)) {
-                        $imageRepository->remove($previousImage,true);
+                    if ($participant->getImage()) {
+                        $image = $participant->getImage();
+                    } else {
+                        $image = new Image();
+                        $participant->setImage($image);
                     }
                     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                     // On viens nettoyer le nom du fichier pour éviter tout problème dans l'URL
                     $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                    $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+
 
                     // On essaye de déplacer le fichier dans le dossier "profile_images"
                     try {
@@ -84,24 +86,31 @@ class ParticipantController extends AbstractController
                     }
                     // On enregistre le nom du fichier plutôt que le fichier lui même
                     $image->setImageFile($newFilename);
+                    $participant->setImage($image);
                 }
 
                 $user = $participant->getUser();
-                $participant->setImage($image);
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get("plainPassword")->getData()
+                    )
+                );
                 $user->setEmail($participant->getMail());
                 $user->setUsername($form->get("username")->getData());
-                $userRepository->save($user, true);
-                $participantRepository->save($participant, true);
+                $entityManager->persist($user);
+                $entityManager->persist($participant);
+                $entityManager->flush();
 
-                return $this->redirectToRoute('app_participant_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('activity_list', [], Response::HTTP_SEE_OTHER);
             }
 
             return $this->render('participant/edit.html.twig', [
                 'participant' => $participant,
                 'form' => $form,
             ]);
-        }else {
-            $this->addFlash("danger","Vous n'avez pas les droits.");
+        } else {
+            $this->addFlash("danger", "Vous n'avez pas les droits.");
             return $this->redirectToRoute("activity_list");
         }
     }
