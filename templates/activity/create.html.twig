@@ -14,11 +14,11 @@
         {% endfor %}
     </div>
 
-<div class="container">
+<div class="container-fluid">
     <h1 class="text-center mb-4 mt-2">Création de sortie</h1>
     {{ form_start(activityForm) }}
-    <div class="d-flex col-6 offset-3">
-        <div class="col-6 d-flex justify-content-center flex-wrap">
+    <div class="d-flex col-md-6 col-sm-12 offset-md-3 offset-sm-0 row">
+        <div class="col-md-6 col-sm-12 d-flex justify-content-center flex-wrap">
             <div class="d-flex justify-content-center flex-wrap col-10 mb-1 card card-header">
                 {{ form_label(activityForm.name) }}
                 {{ form_widget(activityForm.name) }}
@@ -62,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 d-flex justify-content-center flex-wrap">
+        <div class="col-md-6 col-sm-12 d-flex justify-content-center flex-wrap">
             <div class="d-flex justify-content-center flex-wrap col-10 mb-3 card card-header">
                 {{ form_label(activityForm.campus) }}
                 {{ form_widget(activityForm.campus) }}
@@ -93,13 +93,13 @@
             </div>
         </div>
     </div>
-    <div class="d-flex col-4 offset-4 justify-content-around mt-3">
+    <div class="d-flex col-md-4 offset-md-4 offset-sm-0 justify-content-around mt-3">
         <button class="btn btn-warning" type="submit" name="button" value="save">Enregistrer</button>
         <button class="btn btn-success" type="submit" name="button" value="publish">Publier la sortie</button>
         <a class="btn btn-danger" href="{{ path('activity_list') }}">Annuler</a>
     </div>
+    <br>
     {{ form_end(activityForm) }}
-
 </div>
 <script type="text/javascript" src="{{ asset('assets/js/create.js') }}"></script>
 

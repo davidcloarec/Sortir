@@ -55,48 +55,55 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, ImageRepository $imageRepository, ParticipantRepository $participantRepository, UserRepository $userRepository, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Participant $participant, ImageRepository $imageRepository, ParticipantRepository $participantRepository, UserRepository $userRepository,SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
     {
-        // TODO : Controle utilisateur
-        $form = $this->createForm(ParticipantType::class, $participant);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $imageFile = $form->get('image')->getData();;
-            if ($imageFile) {
-                $previousImage = $participant->getImage();
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // On viens nettoyer le nom du fichier pour éviter tout problème dans l'URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+        $loggedUser = $this->getUser();
+        if(in_array('ROLE_ADMIN',$loggedUser->getRoles()) || $loggedUser->getParticipant()->getId()===$participant->getId()){
+            $form = $this->createForm(ParticipantType::class, $participant);
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $imageFile = $form->get('image')->getData();
+                if ($imageFile) {
+                    if($participant->getImage()){
+                        $image = $participant->getImage();
+                    }
+                    else{
+                        $image = new Image();
+                        $participant->setImage($image);
+                    }
+                    $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                    // On viens nettoyer le nom du fichier pour éviter tout problème dans l'URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-                // On essaye de déplacer le fichier dans le dossier "profile_images"
-                try {
-                    $profileImagesDirectory = $this->getParameter('profile_images');
-                    $imageFile->move($profileImagesDirectory, $newFilename);
-                } catch (FileException $e) {
-                    // ... On gère l'exception
+                    // On essaye de déplacer le fichier dans le dossier "profile_images"
+                    try {
+                        $profileImagesDirectory = $this->getParameter('profile_images');
+                        $imageFile->move($profileImagesDirectory, $newFilename);
+                    } catch (FileException $e) {
+                        // ... On gère l'exception
+                    }
+                    // On enregistre le nom du fichier plutôt que le fichier lui même
+                    $image->setImageFile($newFilename);
                 }
-                // On enregistre le nom du fichier plutôt que le fichier lui même
-                if (!$previousImage) {
-                    $previousImage = new Image();
-                    $participant->setImage($previousImage);
-                }
-                $previousImage->setImageFile($newFilename);
+
+                $user = $participant->getUser();
+                $user->setEmail($participant->getMail());
+                $user->setUsername($form->get("username")->getData());
+                $userRepository->save($user, true);
+                $participantRepository->save($participant, true);
+
+                return $this->redirectToRoute('activity_list', [], Response::HTTP_SEE_OTHER);
             }
-            $user = $participant->getUser();
-            $user->setEmail($participant->getMail());
-            $user->setUsername($form->get("username")->getData());
-            $userRepository->save($user, true);
-            $participantRepository->save($participant, true);
 
-            $this->addFlash('success','profil modifié');
-            return $this->redirectToRoute('activity_list', [], Response::HTTP_SEE_OTHER);
+            return $this->render('participant/edit.html.twig', [
+                'participant' => $participant,
+                'form' => $form,
+            ]);
+        }else {
+            $this->addFlash("danger","Vous n'avez pas les droits.");
+            return $this->redirectToRoute("activity_list");
         }
-
-        return $this->render('participant/edit.html.twig', [
-            'participant' => $participant,
-            'form' => $form,
-        ]);
     }
 
     #[Route('/admin/{id}', name: 'app_participant_delete', methods: ['POST'])]

@@ -17,11 +17,12 @@ body{
 .actions{
     margin-top: 8vh;
 }
-
-#table_main{
-    height: 300px;
-    overflow-y: scroll;
-    border: 3px solid #bfe2e9;
+@media only screen and (min-width: 801px) {
+    #table_main {
+        height: 300px;
+        overflow-y: scroll;
+        border: 3px solid #bfe2e9;
+    }
 }
 
 #profilepic{
@@ -30,4 +31,88 @@ body{
     width: 95%;
     display: flex;
     height: 100px;
+}
+
+@media only screen and (max-width: 800px) {
+    /* Force table to not be like tables anymore */
+    #no-more-tables table,
+    #no-more-tables thead,
+    #no-more-tables tbody,
+    #no-more-tables th,
+    #no-more-tables td,
+    #no-more-tables tr{
+    display: block;
+    }
+
+    #no-more-tables table {
+        background-color: mediumaquamarine;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    #no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    #no-more-tables tr {
+        border: 1px solid #ccc;
+        margin-bottom: 7px;
+    }
+
+    #no-more-tables td:not(.notrowOne,.notrowTwo,.notrowThree) {
+        /* Behave like a "row" */
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align:left;
+    }
+
+    #no-more-tables td:not(.notrowOne,.notrowTwo,.notrowThree):before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    /*
+    Label the data
+    */
+    #no-more-tables td:not(.notrowOne,.notrowTwo,.notrowThree):before { content: attr(data-title); }
+
+    #no-more-tables td:is(.notrowOne) {
+        width: 33.333%;
+        height: 3rem;
+        position: absolute;
+    }
+
+    #no-more-tables td:is(.notrowTwo) {
+        width: 33.333%;
+        height: 3rem;
+        position: absolute;
+        left: 33.333%;
+
+    }
+
+    #no-more-tables td:is(.notrowThree) {
+        width: 33.333%;
+        height: 3rem;
+        position: relative;
+        left: 66.666%;
+
+    }
+
+    .alert{
+        margin-left: 10vw;
+        width: 80vw;
+        z-index: 10;
+    }
 }

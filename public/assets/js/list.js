@@ -5,7 +5,10 @@ function init(){
     document.getElementById('isRegistred').addEventListener('click',setList);
     document.getElementById('isNotRegistred').addEventListener('click',setList);
     document.getElementById('past').addEventListener('click',setList);
+    window.addEventListener('resize', displayButton);
+
     setTimeout(removeAlert, 4000);
+    displayButton();
 }
 
 function setList(){
@@ -66,4 +69,13 @@ function removeAlert(){
     for (let alert of document.getElementsByClassName('alert')) {
         alert.remove();
     }
+}
+
+function displayButton(){
+    let create = document.getElementById('create');
+    let submit = document.getElementById('formSubmit');
+    let divTable = document.getElementById('divTable');
+
+    if(screen.width < 800) submit.append(create);
+    else divTable.append(create);
 }
