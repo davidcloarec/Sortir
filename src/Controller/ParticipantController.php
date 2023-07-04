@@ -90,12 +90,18 @@ class ParticipantController extends AbstractController
                 }
 
                 $user = $participant->getUser();
-                $user->setPassword(
-                    $userPasswordHasher->hashPassword(
-                        $user,
-                        $form->get("plainPassword")->getData()
-                    )
-                );
+                if($loggedUser->getId()===$participant->getUser()->getId()){
+                    $plainPassword = $form->get("plainPassword")->getData();
+                    if($plainPassword){
+                        $user->setPassword(
+                            $userPasswordHasher->hashPassword(
+                                $user,
+                                $plainPassword
+                            )
+                        );
+                    }
+                }
+
                 $user->setEmail($participant->getMail());
                 $user->setUsername($form->get("username")->getData());
                 $entityManager->persist($user);
