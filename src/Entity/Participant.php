@@ -31,9 +31,6 @@ class Participant
     #[ORM\Column]
     private ?bool $admin = null;
 
-    #[ORM\Column]
-    private ?bool $active = null;
-
     #[ORM\ManyToOne(inversedBy: 'participants')]
     #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
     private ?Campus $campus = null;
@@ -119,18 +116,6 @@ class Participant
     public function setAdmin(bool $admin): static
     {
         $this->admin = $admin;
-
-        return $this;
-    }
-
-    public function isActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): static
-    {
-        $this->active = $active;
 
         return $this;
     }

@@ -27,7 +27,7 @@
                 <td>{{ participant.phone }}</td>
                 <td>{{ participant.mail }}</td>
                 <td>{{ participant.admin ? 'Yes' : 'No' }}</td>
-                <td>{{ participant.active ? 'Yes' : 'No' }}</td>
+                <td>{{ participant.user.active ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('app_participant_show', {'id': participant.id}) }}">show</a>
                     <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a>

@@ -4,7 +4,10 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use App\Entity\Participant;
+use App\Entity\User;
+use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -32,6 +35,8 @@ class ParticipantType extends AbstractType
 
         if ($participant->getUser()) {
             $username = $participant->getUser()->getUsername();
+            $active = $participant->getUser()->IsActive();
+//            dd($active);
         }
         $builder
             ->add('lastname',TextType::class,[
@@ -53,12 +58,15 @@ class ParticipantType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
-            -> add('admin')
-            ->add('active')
             ->add('username', TextType::class, [
                 'mapped' => false, // Exclude from entity mapping
                 'data' => $username,
                 'label' => 'Pseudo',
+            ])
+            ->add('active', CheckboxType::class, [
+                'required' => false,
+                'mapped' => false,
+                'data' => $active
             ])
             ->add('image', FileType::class, [
                 'mapped'=> false,

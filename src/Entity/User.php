@@ -39,6 +39,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Participant $participant = null;
 
+    #[ORM\Column]
+    private ?bool $active = null;
+
 
     public function getId(): ?int
     {
@@ -157,6 +160,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->resetToken = $resetToken;
         return  $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
+
+        return $this;
     }
 
 
