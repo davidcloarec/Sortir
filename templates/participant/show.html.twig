@@ -3,44 +3,43 @@
 {% block title %}Participant{% endblock %}
 
 {% block body %}
-    <div class="text-center mb-4">
-        <h1>{{ participant.user.username }}</h1>
-    </div>
-    <div class="row mt-5">
-            <div class="col-md-6 text-center">
+    <div class="container-fluid col-10">
+        <div class="text-center mb-3 mt-3">
+            <h1>{{ participant.user.username }}</h1>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6 text-center pt-3">
                 <img src="
-        {% if participant.image %}
-{{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}
-        {% endif %}
-" alt="
-{% if participant.image %}
-profile picture
-{% else %}
-No profile picture 😢
-{% endif %}
-"
+                    {% if participant.image %}
+                        {{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}
+                    {% endif %}" alt="
+                    {% if participant.image %}
+                        profile picture
+                    {% else %}
+                        No profile picture 😢
+                    {% endif %}"
                      border="2px solid black"
                      width="250" height="250">
             </div>
-        <div class="col-md-6">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Pseudo : {{ participant.user.username | capitalize }}</h5>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Prénom : {{ participant.firstname }}</li>
-                    <li class="list-group-item">Nom : {{ participant.lastname }}</li>
-                    <li class="list-group-item">Email : {{ participant.mail }}</li>
-                    <li class="list-group-item">Téléphone : {{ participant.phone }}</li>
-                </ul>
-                <div class="card-body">
-                    {#            <a href="#" class="card-link"></a> #}
-                    <p>Campus de rattachement : {{ participant.campus.name }}</p>
+            <div class="col-md-3 col-12">
+                <div class="card mt-3 mb-3">
+                    <div class="card-body bg-primary-subtle">
+                        <h5 class="card-title">Pseudo : {{ participant.user.username | capitalize }}</h5>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Prénom : {{ participant.firstname }}</li>
+                        <li class="list-group-item">Nom : {{ participant.lastname }}</li>
+                        <li class="list-group-item">Email : {{ participant.mail }}</li>
+                        <li class="list-group-item">Téléphone : {{ participant.phone }}</li>
+                    </ul>
+                    <div class="card-body">
+                        {#            <a href="#" class="card-link"></a> #}
+                        <p>Campus de rattachement : {{ participant.campus.name }}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
     {#    <a href="{{ path('app_participant_index') }}">back to list</a> #}
     {#    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a> #}
     {#    {{ include('participant/_delete_form.html.twig') }} #}
