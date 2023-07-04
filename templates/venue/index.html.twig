@@ -7,32 +7,35 @@
         <form action="">
             <label for="search">Le nom contient : </label>
             <input class="form-control-sm" type="search" name="search" id="search">
-            {#            <button class="btn btn-sm btn-info">Rechercher</button>#}
+            {#            <button class="btn btn-sm btn-info">Rechercher</button> #}
         </form>
     </div>
     <div class="row p-5">
-        <div class="col-md-3">
+        <div class="col-md-3" id="no-more-tables">
             <table class="table table-striped">
-                <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Rue</th>
-                    <th scope="col">Latitude</th>
-                    <th scope="col">Longitude</th>
-                    <th scope="col">Ville</th>
-                    <th scope="col">Actions</th>
-                </tr>
-
+                <thead>
+                    <tr>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Rue</th>
+                        <th scope="col">Latitude</th>
+                        <th scope="col">Longitude</th>
+                        <th scope="col">Ville</th>
+                        <th scope="col" colspan="2">Actions</th>
+                    </tr>
+                </thead>
                 {% for venue in venues %}
                     <tr id="{{ venue.name|lower }}">
-                        <td id="venue">{{ venue.name }}</td>
-                        <td id="street">{{ venue.street }}</td>
-                        <td id="latitude">{{ venue.latitude }}</td>
-                        <td id="longitude">{{ venue.longitude }}</td>
-                        <td id="city">{{ venue.city.name }}</td>
+                        <td data-title="Nom" id="venue">{{ venue.name }}</td>
+                        <td data-title="Rue" id="street">{{ venue.street }}</td>
+                        <td data-title="Latitude" id="latitude">{{ venue.latitude }}</td>
+                        <td data-title="Longitude" id="longitude">{{ venue.longitude }}</td>
+                        <td data-title="Ville" id="city">{{ venue.city.name }}</td>
+                        <td data-title="Actions">
+                            <a class="btn btn-warning" href="{{ path("app_venue_edit",{"id":venue.id} ) }}">Modifier</a>
+                        </td>
                         <td>
-                            <a href="{{ path("app_venue_edit",{"id":venue.id} ) }}">Modifier</a>
-                            -
-                            <a href="{{ path("app_venue_delete",{"id":venue.id} ) }}">Supprimer</a>
+                            <a class="btn btn-danger"
+                               href="{{ path("app_venue_delete",{"id":venue.id} ) }}">Supprimer</a>
                         </td>
                     </tr>
                 {% endfor %}

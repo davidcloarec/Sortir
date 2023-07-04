@@ -54,12 +54,13 @@ function removeAllChildNodes(parent) {
 function displayTable(node,data) {
     let div = document.createElement("div");
     div.className = "text-center";
+    div.id = "no-more-tables"
     let h1 = document.createElement("h3")
     h1.textContent = "Prévisualisation des utilisateurs"
-    div.appendChild(h1)
+    node.appendChild(h1)
     let table = document.createElement('table');
     table.id = 'display';
-    table.className = 'table table-bordered table-striped table-hover m-0';
+    table.className = 'table table-striped';
     let thead = document.createElement("thead");
     let titles = [
         "Email Utilisateur",
@@ -84,11 +85,14 @@ function displayTable(node,data) {
     // création des <td>
     data.forEach(function(array) {
         let row = document.createElement('tr');
+        let i = 0;
         array.forEach(function(item){
             if(item!==""){
                 let cell = document.createElement('td');
+                cell.setAttribute("data-title",titles[i])
                 cell.textContent = item;
                 row.appendChild(cell);
+                i++
             }
         });
         if(row.firstChild){

@@ -11,21 +11,25 @@
         </form>
     </div>
     <div class="row p-5">
-        <div class="col-md-3">
+        <div class="col-md-3" id="no-more-tables">
         <table class="table table-striped">
-            <tr>
-                <th scope="col">Ville</th>
-                <th scope="col">Code postal</th>
-                <th scope="col">Actions</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th scope="col">Ville</th>
+                    <th scope="col">Code postal</th>
+                    <th scope="col" colspan="2">Actions</th>
+                </tr>
+            </thead>
+
 
             {% for city in cities %}
                 <tr id="{{ city.name|lower }}">
-                    <td id="city">{{ city.name }}</td>
-                    <td id="postalcode">{{ city.postalCode }}</td>
-                    <td>
+                    <td data-title="Ville" id="city">{{ city.name }}</td>
+                    <td data-title="Code Postal" id="postalcode">{{ city.postalCode }}</td>
+                    <td data-title="Actions" >
                         <a class="btn btn-warning" href="{{ path("app_city_edit",{"id":city.id}) }}">Modifier</a>
-                        -
+                    </td>
+                    <td>
                         <a class="btn btn-danger" href="{{ path("app_city_delete",{"id":city.id} ) }}">Supprimer</a>
                     </td>
                 </tr>
