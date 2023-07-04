@@ -1,5 +1,5 @@
 body{
-
+    background-color: #c3c3c3 !important;
 }
 
 .flash-messages{
@@ -114,5 +114,30 @@ body{
         margin-left: 10vw;
         width: 80vw;
         z-index: 10;
+    }
+
+    #logo{
+        visibility: hidden;
+    }
+
+    #navbarText{
+        z-index: 10;
+    }
+
+    #navbar{
+        position: fixed;
+        top: 0;
+        width: 100vw;
+        z-index: 10;
+    }
+
+    body{
+        position: relative;
+        background-color: #c2d0d2 !important;
+        top: 8vh;
+    }
+
+    #navbarText>ul>li{
+        margin: 1%;
     }
 }

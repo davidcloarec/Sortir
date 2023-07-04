@@ -1,12 +1,12 @@
 {% block header %}
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark py-0">
-        <a class="navbar-brand" href="{{ path("activity_list") }}">
-            <img src="{{ asset("assets/img/sortirlogo.png") }}" width="60" height="50" alt="">
-        </a>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark py-0" id="navbar">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <img src="{{ asset("assets/img/sortirlogo.png") }}" width="60" height="50" alt="">
         </button>
+        <a class="navbar-brand" href="{{ path("activity_list") }}" id="logo">
+            <img src="{{ asset("assets/img/sortirlogo.png") }}" width="60" height="50" alt="">
+        </a>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item active">
@@ -16,21 +16,33 @@
             {% if app.user %}
             <ul class="navbar-nav ms-auto">
                 {% if is_granted("ROLE_ADMIN") %}
-                    <li class="nav-item">
-                        <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_city_index") }}">Villes</a>
+                    <li class="nav-item col-6 col-md-auto">
+                        <div class="dropdown">
+                            <button class="col-12 col-md-auto btn btn-secondary btn-outline-light me-2 dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Gestion Utilisateurs
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{{ path("app_participant_index") }}">Liste des utilisateurs</a>
+                                <a class="dropdown-item" href="{{ path("app_register") }}">Ajouter un utilisateur</a>
+                                <a class="dropdown-item" href="{{ path("app_register_csv") }}">Ajouter des utilisateurs</a>
+                            </div>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_campus_index") }}">Les Campus</a>
+                    <li class="nav-item col-6 col-md-auto">
+                        <a class="col-12 col-md-auto btn btn-secondary btn-outline-light me-2" href="{{ path("app_city_index") }}">Villes</a>
+                    </li>
+                    <li class="nav-item col-6 col-md-auto">
+                        <a class="col-12 col-md-auto btn btn-secondary btn-outline-light me-2" href="{{ path("app_campus_index") }}">Les Campus</a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("activity_list") }}">Accueil</a>
+                <li class="nav-item col-6 col-md-auto">
+                    <a class="col-12 col-md-auto btn btn-secondary btn-outline-light me-2" href="{{ path("activity_list") }}">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="btn btn-secondary btn-outline-light me-2" href='{{ path("app_participant_edit",{"id":app.user.participant.id}) }}'>Mon profil</a>
+                <li class="nav-item col-6 col-md-auto">
+                    <a class="col-12 col-md-auto btn btn-secondary btn-outline-light me-2" href='{{ path("app_participant_edit",{"id":app.user.participant.id}) }}'>Mon profil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="btn btn-secondary btn-outline-light me-2" href="{{ path("app_logout") }}">Se déconnecter</a>
+                <li class="nav-item col-6 col-md-auto">
+                    <a class="col-12 col-md-auto btn btn-secondary btn-outline-light me-2" href="{{ path("app_logout") }}">Se déconnecter</a>
                 </li>
             </ul>
             {% endif %}

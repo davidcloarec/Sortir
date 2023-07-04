@@ -3,11 +3,11 @@
 {% block title %}Annuler une sortie{% endblock %}
 
 {% block body %}
-<div class="container">
+<div class="container-sm container-fluid">
     <h1 class="text-center mb-5 mt-2">Annuler une sortie</h1>
     <form action="" method="post" class="d-flex justify-content-center">
-        <div class="d-flex col-5 justify-content-center flex-wrap card card-group bg-info-subtle table-bordered">
-            <table class="table table-hover table-info table-striped table-group-divider">
+        <div class="d-flex col-md-4 col-sm-12 justify-content-center flex-wrap card bg-info-subtle table-bordered">
+            <table class="table table-hover table-info table-striped">
                 <tr>
                     <td>Nom de l'activité :</td>
                     <td>{{ activity.name }}</td>
@@ -33,16 +33,15 @@
                 <tr>
                     <td>Motif :</td>
                     <td>
-                        <textarea name="cancelMotive" id="cancelMotive" cols="30" rows="5"></textarea>
+                        <textarea name="cancelMotive" id="cancelMotive"></textarea>
                     </td>
                 </tr>
             </table>
-            <div class="d-flex justify-content-between col-6 mb-3">
+            <div class="d-flex justify-content-around mb-3">
                 <button class="btn btn-success" type="submit">Enregistrer</button>
                 <a class="btn btn-danger" href="{{ path('activity_list') }}">Annuler</a>
             </div>
         </div>
-
     </form>
 
 </div>
