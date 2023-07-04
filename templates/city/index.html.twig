@@ -26,7 +26,7 @@
                 <tr id="{{ city.name|lower }}">
                     <td data-title="Ville" id="city">{{ city.name }}</td>
                     <td data-title="Code Postal" id="postalcode">{{ city.postalCode }}</td>
-                    <td data-title="Actions" >
+                    <td data-title="Actions">
                         <a class="btn btn-warning" href="{{ path("app_city_edit",{"id":city.id}) }}">Modifier</a>
                     </td>
                     <td>

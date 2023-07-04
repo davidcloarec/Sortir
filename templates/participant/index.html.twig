@@ -5,41 +5,48 @@
 {% block body %}
     <h1>Participant index</h1>
 
-    <table class="table">
-        <thead>
+    <div id="no-more-tables">
+        <table class="table">
+            <thead>
             <tr>
-                <th>Id</th>
-                <th>Lastname</th>
-                <th>Firstname</th>
-                <th>Phone</th>
-                <th>Mail</th>
-                <th>Admin</th>
-                <th>Active</th>
-                <th>actions</th>
+                <th scope="col">Id</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">E-mail</th>
+                <th scope="col">Administrateur</th>
+                <th scope="col">Actif</th>
+                <th scope="col" colspan="2">Actions</th>
             </tr>
-        </thead>
-        <tbody>
-        {% for participant in participants %}
-            <tr>
-                <td>{{ participant.id }}</td>
-                <td>{{ participant.lastname }}</td>
-                <td>{{ participant.firstname }}</td>
-                <td>{{ participant.phone }}</td>
-                <td>{{ participant.mail }}</td>
-                <td>{{ participant.admin ? 'Yes' : 'No' }}</td>
-                <td>{{ participant.active ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_participant_show', {'id': participant.id}) }}">show</a>
-                    <a href="{{ path('app_participant_edit', {'id': participant.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for participant in participants %}
+                <tr>
+                    <td data-title="Id">{{ participant.id }}</td>
+                    <td data-title="Nom">{{ participant.lastname }}</td>
+                    <td data-title="Prénom">{{ participant.firstname }}</td>
+                    <td data-title="Téléphone">{{ participant.phone }}</td>
+                    <td data-title="E-mail">{{ participant.mail }}</td>
+                    <td data-title="Administrateur">{{ participant.admin ? 'Yes' : 'No' }}</td>
+                    <td data-title="Actif">{{ participant.active ? 'Yes' : 'No' }}</td>
+                    <td data-title="Actions">
+                        <a class="btn btn-info" href="{{ path('app_participant_show', {'id': participant.id}) }}">Afficher</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="{{ path('app_participant_edit', {'id': participant.id}) }}">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-    <a href="{{ path('app_participant_new') }}">Create new</a>
+
+    <div class="text-center mb-3">
+        <a class="btn btn-success" href="{{ path('app_participant_new') }}">Create new</a>
+    </div>
 {% endblock %}
