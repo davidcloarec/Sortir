@@ -1,26 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+
 
 {% block body %}
-    <h1>Register</h1>
-
+    <div class="text-center mt-1">
+        <h1>Nouvel utilisateur</h1>
+    </div>
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.username) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.plainPassword, {
-        label: 'Password'
-    }) }}
-    {{ form_row(registrationForm.lastName) }}
-    {{ form_row(registrationForm.firstName) }}
-    {{ form_row(registrationForm.phone) }}
-    {{ form_row(registrationForm.admin) }}
-    {{ form_row(registrationForm.active) }}
-    {{ form_row(registrationForm.campus) }}
-    {{ form_row(registrationForm.agreeTerms) }}
+    <div class="row">
+        <div class="col-md-2 offset-md-5 col-sm-3 mt-3">
+            {{ form_row(registrationForm.username) }}
+            {{ form_row(registrationForm.email) }}
+            {{ form_row(registrationForm.plainPassword) }}
 
-    <button type="submit" class="btn btn-success">Register</button>
+            {{ form_row(registrationForm.lastName) }}
+            {{ form_row(registrationForm.firstName) }}
+            {{ form_row(registrationForm.phone) }}
+            <div class="d-flex justify-content-evenly mt-2">
+                {{ form_row(registrationForm.admin) }}
+                {{ form_row(registrationForm.active) }}
+            </div>
+            {{ form_row(registrationForm.campus) }}
+            {#            {{ form_row(registrationForm.agreeTerms) }} #}
+
+            <div class="col-md-2 offset-md-4 col-sm-3 justify-content-sm-center mt-3">
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success">Enregistrer</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
     {{ form_end(registrationForm) }}
 {% endblock %}

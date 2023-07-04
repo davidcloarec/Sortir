@@ -13,7 +13,8 @@ class UserParticipantCSVType extends AbstractType
     {
         $builder
             ->add('submitFile', FileType::class,[
-                'label'=>false
+                'label'=>false,
+                'attr'=>['class'=>'form-control-file']
             ])
         ;
     }

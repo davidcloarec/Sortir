@@ -11,19 +11,23 @@
         </form>
     </div>
     <div class="row p-5">
-        <div class="col-md-3">
+        <div class="col-md-3" id="no-more-tables">
         <table class="table table-striped">
-            <tr>
-                <th scope="col">Ville</th>
-                <th scope="col">Actions</th>
-            </tr>
+            <thead>
+                <tr>
+                    <th scope="col">Campus</th>
+                    <th scope="col" colspan="2">Actions</th>
+                </tr>
+            </thead>
+
 
             {% for campus in campuses %}
                 <tr id="{{ campus.name|lower }}">
-                    <td id="campus">{{ campus.name }}</td>
-                    <td>
+                    <td data-title="Campus" id="campus">{{ campus.name }}</td>
+                    <td data-title="Actions">
                         <a class="btn btn-warning" href="{{ path("app_campus_edit",{"id":campus.id}) }}">Modifier</a>
-                        -
+                    </td>
+                    <td>
                         <a class="btn btn-danger" href="{{ path("app_campus_delete",{"id":campus.id} ) }}">Supprimer</a>
                     </td>
                 </tr>

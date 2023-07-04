@@ -5,18 +5,18 @@
     <div class="text-center">Nouvelle ville</div>
     {{ form_start(form) }}
     <div class="row">
-        <div class="col-md-6 offset-md-5 mt-4">
+        <div class="col-md-2 offset-md-5 col-sm-3 mt-4">
             {{ form_label(form.name) }}
-            {{ form_widget(form.name, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_widget(form.name, {'attr':{'class': 'form-control form-control-sm'} }) }}
             {{ form_errors(form.name) }}
 
             {{ form_label(form.postalCode) }}
-            {{ form_widget(form.postalCode, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_widget(form.postalCode, {'attr':{'class': 'form-control form-control-sm'} }) }}
             {{ form_errors(form.postalCode) }}
         </div>
     </div>
-    <div class="col-md-4 offset-md-5 mt-3">
-        <div class="d-flex justify-content-between col-6">
+    <div class="col-md-2 offset-md-5 col-sm-3 mt-3">
+        <div class="d-flex justify-content-evenly">
             <button class="btn btn-success">Ajouter</button>
             <a class="btn btn-danger" href="{{ path("app_city_index") }}">Annuler</a>
         </div>

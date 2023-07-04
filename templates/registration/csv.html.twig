@@ -3,18 +3,28 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Ajouter des utilisateurs par CSV</h1>
-    <div class="d-inline-flex m-3">
-        {{ form_errors(registrationForm) }}
+    <div class="text-center">
+        <h1>Ajouter des utilisateurs par CSV</h1>
+    </div>
 
-        {{ form_start(registrationForm) }}
-{#        {{ form_row(registrationForm.submitFile) }}#}
-        {{ form_label(registrationForm, 'Fichier CSV à convertir',{'attr': {'class': 'form-label'}}) }}
-        {{ form_widget(registrationForm, {'attr': {'class': 'form-control-sm'}}) }}
-        {#  Preview des utilisateurs insérés avec JS ?  #}
-        <button type="submit" class="btn btn-success m-3">Insérer des utilisateurs</button>
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm) }}
+    <div class="row">
+        <div class="col-md-2 offset-md-5 col-sm-3 mt-3 offset-2">
+            {{ form_label(registrationForm, 'Fichier CSV à convertir',{'attr': {'class': 'form-label'}}) }}
+            {{ form_widget(registrationForm) }}
+        </div>
+            {#  Preview des utilisateurs insérés avec JS ?  #}
+        <div class="col-md-2 offset-md-5 col-sm-3 mt-3">
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success m-3">Insérer des utilisateurs</button>
+            </div>
+        </div>
+    </div>
         {{ form_end(registrationForm) }}
-        <div id="output">
+    <div class="row">
+        <div id="output" class="col-md-5 offset-md-3 col-sm-3 mt-3">
             {#      Div prévue pour la prévisualisation des données      #}
         </div>
     </div>

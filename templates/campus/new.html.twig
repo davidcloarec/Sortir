@@ -5,15 +5,15 @@
     <div class="text-center">Nouveau campus</div>
     {{ form_start(form) }}
     <div class="row">
-        <div class="col-md-6 offset-md-5 mt-4">
+        <div class="col-md-2 offset-md-5 col-sm-3 mt-3">
             {{ form_label(form.name) }}
-            {{ form_widget(form.name, {'attr':{'class': 'form-control-sm'} }) }}
+            {{ form_widget(form.name, {'attr':{'class': 'form-control form-control-sm'} }) }}
             {{ form_errors(form.name) }}
 
         </div>
     </div>
-    <div class="col-md-4 offset-md-5 mt-3">
-        <div class="d-flex justify-content-between col-6">
+    <div class="col-md-2 offset-md-5 col-sm-3 mt-3">
+        <div class="d-flex justify-content-evenly">
             <button class="btn btn-success">Ajouter</button>
             <a class="btn btn-danger" href="{{ path("app_campus_index") }}">Annuler</a>
         </div>
