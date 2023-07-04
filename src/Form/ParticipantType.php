@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use function Sodium\add;
 
 class ParticipantType extends AbstractType
 {
@@ -52,6 +53,8 @@ class ParticipantType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
             ])
+            -> add('admin')
+            ->add('active')
             ->add('username', TextType::class, [
                 'mapped' => false, // Exclude from entity mapping
                 'data' => $username,
@@ -64,6 +67,7 @@ class ParticipantType extends AbstractType
             ]);
         if($participant->getUser()->getId()===$this->security->getUser()->getId()){
             $builder->add('plainPassword', RepeatedType::class, [
+                'required' => false,
                 'type' => PasswordType::class,
                 'label'=>"Mot de passe",
                 'first_options'  => ['label' => 'Nouveau mot de passe',],

@@ -84,6 +84,20 @@
             </div>
             <div class="form-row">
                 <div class="form-group p-2">
+                    {{ form_label(form.admin) }}
+                    {{ form_widget(form.admin) }}
+                    {{ form_errors(form.admin) }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group p-2">
+                    {{ form_label(form.active) }}
+                    {{ form_widget(form.active) }}
+                    {{ form_errors(form.active) }}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group p-2">
                     {{ form_label(form.image) }}
                     {{ form_widget(form.image, {'attr':{'class': 'form-control'} }) }}
                     {{ form_errors(form.image) }}

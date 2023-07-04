@@ -39,6 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Participant $participant = null;
 
+
     public function getId(): ?int
     {
         return $this->id;
@@ -157,5 +158,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->resetToken = $resetToken;
         return  $this;
     }
+
 
 }
