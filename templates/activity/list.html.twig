@@ -155,8 +155,7 @@
                                     {% endif %}
                                 {% else %}
                                     {% if 'ROLE_ADMIN' in app.user.roles
-                                        and activity.state.libelle == 'ouverte'
-                                        or activity.state.libelle == 'cloturé'
+                                        and (activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé')
                                     %}
                                         <a class="btn btn-danger col-12" href="{{ path('activity_delete_admin', {'id' : activity.id}) }}">Annuler</a>
                                     {% endif %}

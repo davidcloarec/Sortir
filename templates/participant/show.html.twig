@@ -12,6 +12,8 @@
                 <img src="
                     {% if participant.image %}
                         {{ asset("uploads/profile_images/") }}{{ participant.image.imageFile }}
+                    {% else %}
+                        {{ asset("assets/img/placeholder.png") }}
                     {% endif %}" alt="
                     {% if participant.image %}
                         profile picture

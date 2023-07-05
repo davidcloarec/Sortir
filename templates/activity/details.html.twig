@@ -69,9 +69,8 @@
             </div>
             <div class="">
                 {%
-                    if app.user.participant == activity.organizer
-                    and (activity.state.libelle == 'ouverte'
-                    or activity.state.libelle == 'cloturé')
+                    if (app.user.participant == activity.organizer or 'ROLE_ADMIN' in app.user.roles)
+                    and (activity.state.libelle == 'ouverte' or activity.state.libelle == 'cloturé')
                 %}
                 <a href="{{ path('activity_delete', {'id' : activity.id}) }}" class="btn btn-danger">Annuler la sortie</a>
                 {% endif %}
