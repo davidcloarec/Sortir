@@ -79,7 +79,7 @@
                 </select>
             </div>
             <div class="d-flex justify-content-center flex-wrap col-10 mb-3 card card-header">
-                {{ form_label(activityForm.venue) }}
+                {{ form_label(activityForm.venue) }} <a href="{{ path('app_venue_new') }}">Création de lieu</a>
                 {{ form_widget(activityForm.venue) }}
                 <div class="text-danger">
                     {{ form_errors(activityForm.venue) }}
