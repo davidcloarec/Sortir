@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 50, unique: true)]
     private ?string $username = null;
 
-    #[ORM\Column(type:'string', length: 100)]
+    #[ORM\Column(type:'string', length: 100,nullable: true)]
     private $resetToken;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
