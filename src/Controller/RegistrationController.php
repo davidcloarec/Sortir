@@ -82,6 +82,7 @@ class RegistrationController extends AbstractController
                         $csvUser[1]
                     )
                 );
+                $user->setResetToken('0sfese541fs5efgse4');
                 $user->setUsername($csvUser[2]);
                 $participant = new Participant();
                 $participant->setUser($user);

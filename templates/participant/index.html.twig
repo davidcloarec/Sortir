@@ -3,7 +3,7 @@
 {% block title %}Liste des utilisateurs{% endblock %}
 
 {% block body %}
-    <h1>Participant index</h1>
+    <h1>Liste des utilisateurs</h1>
 
     <div id="no-more-tables">
         <table class="table">
@@ -27,8 +27,8 @@
                     <td data-title="Prénom">{{ participant.firstname }}</td>
                     <td data-title="Téléphone">{{ participant.phone }}</td>
                     <td data-title="E-mail">{{ participant.mail }}</td>
-                    <td data-title="Administrateur">{{ participant.admin ? 'Yes' : 'No' }}</td>
-                    <td data-title="Actif">{{ participant.active ? 'Yes' : 'No' }}</td>
+                    <td data-title="Administrateur">{{ participant.admin ? 'Oui' : 'Non' }}</td>
+                    <td data-title="Actif">{{ participant.user.active ? 'Oui' : 'Non' }}</td>
                     <td data-title="Actions">
                         <a class="btn btn-info" href="{{ path('app_participant_show', {'id': participant.id}) }}">Afficher</a>
                     </td>
@@ -38,7 +38,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="8">no records found</td>
+                    <td colspan="8">Aucun utilisateur trouvé</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -47,6 +47,6 @@
 
 
     <div class="text-center mb-3">
-        <a class="btn btn-success" href="{{ path('app_participant_new') }}">Create new</a>
+        <a class="btn btn-success" href="{{ path('app_participant_new') }}">Ajouter un utilisateur</a>
     </div>
 {% endblock %}
