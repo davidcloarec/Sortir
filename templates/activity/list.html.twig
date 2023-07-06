@@ -108,7 +108,15 @@
                             or  (activity.state.libelle == 'en cours')
                             or  (activity.state.libelle == 'passé')
                         %}
-                        <tr>
+                        <tr class="
+                                {{ activity.state.libelle == 'créée'?'table-warning':'' }}
+                                {{ activity.state.libelle == 'ouverte'?'table-success':'' }}
+                                {{ activity.state.libelle == 'cloturé'?'table-white':'' }}
+                                {{ activity.state.libelle == 'en cours'?'table-primary':'' }}
+                                {{ activity.state.libelle == 'passé'?'table-danger':'' }}
+                                {{ activity.state.libelle == 'annulée'?'table-danger':'' }}
+                                {{ activity.state.libelle == 'archivée'?'table-danger':'' }}
+                            ">
                             <td data-title="Nom de la sortie">{{ activity.name }}</td>
                             <td data-title="Date de la sortie">{{ activity.startingTime|date('d/m/Y H:i') }}</td>
                             <td data-title="Clôture">{{ activity.signUpLimit|date('d/m/Y') }}</td>
