@@ -36,7 +36,7 @@ class VenueController extends AbstractController
             $entityManager->persist($venue);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_venue_index');
+            return $this->redirectToRoute('activity_create');
         }
         return $this->render('venue/new.html.twig', [
             'controller_name' => 'VenueController',
