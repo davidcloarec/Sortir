@@ -4,8 +4,6 @@ namespace App\Form;
 
 use App\Entity\Campus;
 use App\Entity\Participant;
-use App\Entity\User;
-use Doctrine\DBAL\Types\BooleanType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -17,8 +15,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
-use function Sodium\add;
 
 class ParticipantType extends AbstractType
 {
@@ -35,8 +31,6 @@ class ParticipantType extends AbstractType
 
         if ($participant->getUser()) {
             $username = $participant->getUser()->getUsername();
-            $active = $participant->getUser()->IsActive();
-//            dd($active);
         }
         $builder
             ->add('lastname',TextType::class,[
@@ -63,11 +57,6 @@ class ParticipantType extends AbstractType
                 'data' => $username,
                 'label' => 'Pseudo',
             ])
-            ->add('active', CheckboxType::class, [
-                'required' => false,
-                'mapped' => false,
-                'data' => $active
-            ])
             ->add('image', FileType::class, [
                 'mapped'=> false,
                 'label' => 'Ma photo',
@@ -83,7 +72,13 @@ class ParticipantType extends AbstractType
                 'mapped' => false,
             ]);
         }
-
+        if(in_array("ROLE_ADMIN",$this->security->getUser()->getRoles())){
+            $builder->add('active', CheckboxType::class, [
+                'required' => false,
+                'mapped' => false,
+                'data' => $participant->getUser()->isActive(),
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
