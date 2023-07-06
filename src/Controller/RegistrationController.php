@@ -36,13 +36,13 @@ class RegistrationController extends AbstractController
             );
 
             $participant = new Participant();
-            $participant->setUser($user);
             $participant->setLastname($form->get('lastName')->getData());
             $participant->setFirstname($form->get('firstName')->getData());
             $participant->setMail($user->getEmail());
             $participant->setPhone($form->get('phone')->getData());
             $participant->setAdmin($form->get('admin')->getData());
-            $participant->setActive($form->get('active')->getData());
+            $user->setActive($form->get('active')->getData());
+            $participant->setUser($user);
             $campus = $form->get('campus')->getData();
             $participant->setCampus($campus);
 
@@ -84,13 +84,13 @@ class RegistrationController extends AbstractController
                 );
                 $user->setUsername($csvUser[2]);
                 $participant = new Participant();
-                $participant->setUser($user);
                 $participant->setLastname($csvUser[3]);
                 $participant->setFirstname($csvUser[4]);
                 $participant->setPhone($csvUser[5]);
                 $participant->setMail($csvUser[6]);
                 $participant->setAdmin($csvUser[7]);
-                $participant->setActive($csvUser[8]);
+                $user->setActive($csvUser[8]);
+                $participant->setUser($user);
                 $campus = $campusRepository->findOneBy(["name"=>ucfirst($csvUser[9])]);
                 if($campus){
                     $participant->setCampus($campus);

@@ -76,12 +76,14 @@ class RegistrationFormType extends AbstractType
             ->add('admin',CheckboxType::class,[
                 'mapped'=>false,
                 'label'=>'Administrateur',
+                'required'=>false,
                 'attr'=>['class'=>'form-check-input'],
                 'label_attr'=>['class'=>'me-2'],
             ])
             ->add('active',CheckboxType::class,[
                 'mapped'=>false,
                 'label'=>'Actif',
+                'required'=>false,
                 'attr'=>['class'=>'form-check-input'],
                 'label_attr'=>['class'=>'me-2'],
             ])
