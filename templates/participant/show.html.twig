@@ -36,7 +36,7 @@
                     </ul>
                     <div class="card-body">
                         {#            <a href="#" class="card-link"></a> #}
-                        <p>Campus de rattachement : {{ participant.campus.name }}</p>
+                        <p>Campus de rattachement : {{ participant.campus?participant.campus.name:'Aucun' }}</p>
                     </div>
                 </div>
             </div>
