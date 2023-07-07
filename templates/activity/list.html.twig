@@ -120,7 +120,9 @@
                             <td data-title="Nom de la sortie">{{ activity.name }}</td>
                             <td data-title="Date de la sortie">{{ activity.startingTime|date('d/m/Y H:i') }}</td>
                             <td data-title="Clôture">{{ activity.signUpLimit|date('d/m/Y') }}</td>
-                            <td data-title="Inscrits / places">{{ activity.participants|length }} / {{ activity.maxSignUp }}</td>
+                            <td data-title="Inscrits / places" {{ activity.participants|length==activity.maxSignUp?'class="text-danger"' }}>
+                                {{ activity.participants|length }} / {{ activity.maxSignUp }}
+                            </td>
                             <td data-title="Etat" name="state">{{ activity.state.libelle }}</td>
                             <td data-title="Inscrit" name="register"
                                 {% if app.user.participant in activity.participants %}
