@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Entity\Participant;
+use App\Entity\User;
 use App\Form\ParticipantType;
 use App\Repository\ImageRepository;
 use App\Repository\ParticipantRepository;
@@ -56,11 +57,21 @@ class ParticipantController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_participant_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Participant $participant, UserPasswordHasherInterface $userPasswordHasher, ImageRepository $imageRepository, ParticipantRepository $participantRepository, UserRepository $userRepository, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    public function edit(
+        Request $request,
+        Participant $participant,
+        UserPasswordHasherInterface $userPasswordHasher,
+        ImageRepository $imageRepository,
+        ParticipantRepository $participantRepository,
+        UserRepository $userRepository,
+        SluggerInterface $slugger,
+        EntityManagerInterface $entityManager
+    ): Response
     {
         $loggedUser = $this->getUser();
         if (in_array('ROLE_ADMIN', $loggedUser->getRoles()) || $loggedUser->getParticipant()->getId() === $participant->getId()) {
             $form = $this->createForm(ParticipantType::class, $participant);
+
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $imageFile = $form->get('image')->getData();
@@ -101,6 +112,18 @@ class ParticipantController extends AbstractController
                         );
                     }
                 }
+                /****
+                 * Désactiver utilisateur
+                 */
+                if(in_array('ROLE_ADMIN',$this->getUser()->getRoles())){
+                    $active = $form->get('active')->getData();
+//                dd($active);
+                    $user->setActive($active);
+                    $participant->setUser($user);
+                }
+                /**
+                 * fin desactiver user
+                 */
 
                 $user->setEmail($participant->getMail());
                 $user->setUsername($form->get("username")->getData());
@@ -113,7 +136,7 @@ class ParticipantController extends AbstractController
 
             return $this->render('participant/edit.html.twig', [
                 'participant' => $participant,
-                'form' => $form,
+                'form' => $form//
             ]);
         } else {
             $this->addFlash("danger", "Vous n'avez pas les droits.");

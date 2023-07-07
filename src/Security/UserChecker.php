@@ -3,7 +3,7 @@
 namespace App\Security;
 
 use App\Security\AccountDisabledException;
-use App\Entity\Participant as AppUser;
+use App\Entity\User as AppUser;
 use Symfony\Component\Security\Core\Exception\AccountExpiredException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
@@ -19,8 +19,9 @@ class UserChecker implements UserCheckerInterface
         }
 
         // L’utilisateur n’est pas activé par l’administrateur
-        if (!$user->getActive()) {
-            throw new AccountDisabledException();
+        if (!$user->isActive()) {
+            throw new CustomUserMessageAccountStatusException("Vous n'avez pas les droits.");
+
         }
 
 //        if ($user->isDeleted()) {
