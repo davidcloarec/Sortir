@@ -10,8 +10,8 @@
                 <div class="col-md-4 offset-md-1 offset-sm-0 mb-5 mb-md-0 card p-0">
                     <h3 class="card card-header bg-primary-subtle">Nom de la sortie : {{ activity.name }}</h3>
                     <div class="card-body">
-                        <p>Date et heure de sortie : {{ activity.startingTime|date }}</p>
-                        <p>Date limite d'inscription : {{ activity.signUpLimit|date }}</p>
+                        <p>Date et heure de sortie : {{ activity.startingTime|date('d/m/Y à H:i') }}</p>
+                        <p>Date limite d'inscription : {{ activity.signUpLimit|date('d/m/Y') }}</p>
                         <p>Nombre de place : {{ activity.maxSignUp }}</p>
                         <p>Durée : {{ activity.duration }} minutes</p>
                         <p>Description et informations : {{ activity.info }}</p>
@@ -49,7 +49,11 @@
                         {% for participant in activity.participants %}
                             <tr>
                                 <td>{{ participant.user.username }}</td>
-                                <td>{{ participant.firstname }} {{ participant.lastname|upper }}</td>
+                                <td>
+                                    <a href="{{ path('app_participant_show', {'id' : participant.id}) }}">
+                                        {{ participant.firstname }} {{ participant.lastname|upper }}
+                                    </a>
+                                </td>
                             </tr>
                         {% endfor %}
                         </tbody>

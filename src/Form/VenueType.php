@@ -14,12 +14,21 @@ class VenueType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('street')
-            ->add('latitude')
-            ->add('longitude')
+            ->add('name', null, [
+                'label'=>'Nom du lieu'
+            ])
+            ->add('street', null, [
+                'label'=>'Rue'
+            ])
+            ->add('latitude', null, [
+                'label'=>'Latitude'
+            ])
+            ->add('longitude', null, [
+                'label'=>'Longitude'
+            ])
             ->add('city',EntityType::class,[
                 'class'=>City::class,
+                'label'=>'Ville',
                 'mapped'=>false,
                 'multiple'=>false,
                 'expanded'=>false,

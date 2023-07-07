@@ -34,6 +34,11 @@ class Activity
 
 
     #[Assert\Type(type: 'integer', message: 'la durée doit etre un nombre entier')]
+    #[Assert\Range(
+        notInRangeMessage: 'la durée doit etre comprise entre 10 et 600 minutes',
+        min: 10,
+        max: 600
+    )]
     #[ORM\Column]
     private ?int $duration = null;
 

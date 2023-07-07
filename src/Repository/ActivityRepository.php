@@ -12,7 +12,6 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Activity|null find($id, $lockMode = null, $lockVersion = null)
  * @method Activity|null findOneBy(array $criteria, array $orderBy = null)
- * @method Activity[]    findAll()
  * @method Activity[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ActivityRepository extends ServiceEntityRepository
@@ -29,6 +28,11 @@ class ActivityRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findAll():array
+    {
+        return $this->findBy(array(), array('startingTime' => 'ASC'));
     }
 
     public function remove(Activity $entity, bool $flush = false): void
@@ -78,7 +82,8 @@ class ActivityRepository extends ServiceEntityRepository
 //                ->setParameter('startDate' and 'endDate', $search->startDate and $search->endDate );
 //        }
 
-
+        $query = $query
+            ->addOrderBy('a.startingTime','ASC');
 
 
         return $query->getQuery()->getResult();

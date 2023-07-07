@@ -47,6 +47,13 @@
                     {{ form_errors(form.firstname) }}
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group p-2">
+                    {{ form_label(form.lastname) }}
+                    {{ form_widget(form.lastname, {'attr':{'class': 'form-control'} }) }}
+                    {{ form_errors(form.lastname) }}
+                </div>
+            </div>
             {% if app.user.id==participant.user.id %}
                 <div class="form-row">
                     <div class="form-group p-2">
@@ -56,13 +63,6 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="form-row">
-                <div class="form-group p-2">
-                    {{ form_label(form.lastname) }}
-                    {{ form_widget(form.lastname, {'attr':{'class': 'form-control'} }) }}
-                    {{ form_errors(form.lastname) }}
-                </div>
-            </div>
             <div class="form-row">
                 <div class="form-group p-2">
                     {{ form_label(form.mail) }}

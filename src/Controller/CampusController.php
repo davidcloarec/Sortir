@@ -67,6 +67,6 @@ class CampusController extends AbstractController
         if ($campus) {
             $campusRepository->remove($campus, true);
         }
-        return $this->redirectToRoute('app_venue_index');
+        return $this->redirectToRoute('app_campus_index');
     }
 }

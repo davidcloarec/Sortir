@@ -65,7 +65,7 @@
         <div class="col-md-6 col-sm-12 d-flex justify-content-center flex-wrap">
             <div class="d-flex justify-content-center flex-wrap col-10 mb-3 card card-header">
                 {{ form_label(activityForm.campus) }}
-                {{ form_widget(activityForm.campus) }}
+                {{ form_widget(activityForm.campus, {'value': app.user.participant.campus.id}) }}
                 <div class="text-danger">
                     {{ form_errors(activityForm.campus) }}
                 </div>
@@ -74,7 +74,10 @@
                 <label for="city">Ville : </label>
                 <select name="city" id="city">
                     {% for key, city in cities %}
-                    <option value="{{ city.name }}">{{ city.name }}</option>
+                    <option value="{{ city.name }}"
+                            {{ app.user.participant.campus.name==city.name?'selected="selected"':'' }}>
+                        {{ city.name }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
